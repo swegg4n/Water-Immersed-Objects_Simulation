@@ -6,7 +6,7 @@ public class Benchmarking : MonoBehaviour
 {
     private string benchmarkPath;
 
-    private const int REFERENCE_BOAT_SAMPLES = 20000;
+    private const int REFERENCE_BOAT_SAMPLES = 20480;
 
     [SerializeField] private TestCase[] testCases;
 

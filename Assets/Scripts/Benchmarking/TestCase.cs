@@ -12,7 +12,7 @@ public class TestCase : ScriptableObject
 
     public GameObject prefab;
     public Vector3 position = new Vector3(0, 0, 0);
-    public int[] sampleCounts = new int[] { 10, 20, 40, 80, 160, 320, 640, 1280, 2560, 5120, 10240, 20480, 40960, 81920, 163840 };
+    public int[] sampleCounts = new int[] { 10, 20, 40, 80, 160, 320, 640, 1280, 2560, 5120, 10240, 20480 };
 
     public float density = 700.0f;
     public float viscosity = 1.0f;
