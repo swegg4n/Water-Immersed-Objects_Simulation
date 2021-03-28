@@ -1,0 +1,25 @@
+Test length:  1000
+Type of test:  Correctness
+CPU: Intel(R) Core(TM) i5-4670K CPU @ 3.40GHz (3398)
+
+Prefab name:  SailBoat
+Stratified divisions:  0
+
+Amplitude:  0
+Ordinary frequency  1.5
+Angular frequency  1
+
+
+SampleCount 	 Mean square vertices error
+10 	 0.2254472
+20 	 0.1980036
+40 	 0.04784794
+80 	 0.122017
+160 	 0.02699575
+320 	 0.06639037
+640 	 0.04486875
+1280 	 0.04105073
+2560 	 0.04652953
+5120 	 0.0619284
+10240 	 0.01394677
+20480 	 0.01400285
