@@ -17,13 +17,13 @@ public class WaterImmersedRigidbody : MonoBehaviour
     WaterDrag waterDrag;
 
 
-    public List<Mesh> meshList;
+    [HideInInspector] public List<Mesh> meshList;
 
 
-    private void Awake()
-    {
-        Initialize();
-    }
+    //private void Awake()
+    //{
+    //    Initialize();
+    //}
 
 
     public void Initialize()
@@ -85,6 +85,8 @@ public class WaterImmersedRigidbody : MonoBehaviour
         this.sampleCount = sampleCount;
         this.density = density;
         this.viscosity = viscosity;
+
+        Initialize();
     }
 
 

@@ -32,25 +32,30 @@ public static class BenchmarkHelper
     }
 
 
-    public static float VerticesSqrError(Mesh[] originalMeshes, Vector3[] referenceVertices)
+    public static Vector3[] MeshArrayToVerticesArray(Mesh[] originalMeshes, Transform transform)
     {
-        int meshesVertexCount = 0;
-        for (int i = 0; i < originalMeshes.Length; i++)
-        {
-            meshesVertexCount += originalMeshes[i].vertexCount;
-        }
-        Vector3[] originalVertices = new Vector3[meshesVertexCount];
+        Matrix4x4 localToWorld = transform.localToWorldMatrix;
 
-        int vertexCounter = 0;
+        Vector3[][] meshVertices = new Vector3[originalMeshes.Length][];
+
+        int vertCount = 0;
         for (int i = 0; i < originalMeshes.Length; i++)
         {
-            for (int j = 0; j < originalMeshes[i].vertexCount; j++, vertexCounter++)
+            meshVertices[i] = originalMeshes[i].vertices;
+            vertCount += originalMeshes[i].vertexCount;
+        }
+        Vector3[] originalVertices = new Vector3[vertCount];
+
+        int c = 0;
+        for (int i = 0; i < meshVertices.Length; i++)
+        {
+            for (int j = 0; j < meshVertices[i].Length; j++, c++)
             {
-                originalVertices[vertexCounter] = originalMeshes[i].vertices[j];
+                originalVertices[c] = localToWorld.MultiplyPoint3x4(meshVertices[i][j]);
             }
         }
 
-        return VerticesSqrError(originalVertices, referenceVertices);
+        return originalVertices;
     }
 
     public static float VerticesSqrError(Vector3[] originalVertices, Vector3[] referenceVertices)
@@ -63,8 +68,7 @@ public static class BenchmarkHelper
         }
 
         float avgVerticesSqrError = AverageValue(verticesSqrError);
-        Debug.Log("Avg sqr error:  " + avgVerticesSqrError);
-
+        //Debug.Log("Avg sqr error:  " + avgVerticesSqrError);
         return avgVerticesSqrError;
     }
 
