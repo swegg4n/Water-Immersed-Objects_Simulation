@@ -8,13 +8,16 @@ using UnityEditor;
 public class WaterImmersedRigidbody : MonoBehaviour
 {
     [SerializeField] private int sampleCount = 100;
-    [SerializeField] private float density = 997.0f;
+    [SerializeField] private float density = 700.0f;
     [SerializeField] private float viscosity = 1.0f;
 
     MeshSampler meshSampler;
     Gravity gravity;
     Buoyancy buoyancy;
     WaterDrag waterDrag;
+
+
+    public List<Mesh> meshList;
 
 
     private void Awake()
@@ -25,7 +28,7 @@ public class WaterImmersedRigidbody : MonoBehaviour
 
     public void Initialize()
     {
-        List<Mesh> meshList = new List<Mesh>();
+        meshList = new List<Mesh>();
         List<MeshRenderer> meshRendererList = new List<MeshRenderer>();
         List<Transform> transformList = new List<Transform>();
 

@@ -27,6 +27,7 @@ public class WaveManager : MonoBehaviour
         this.amplitude = amplitude;
         this.ordinaryFrequency = ordinaryFrequency;
         this.angluarFrequency = angluarFrequency;
+        this.phase = 0.0f;
     }
 
 

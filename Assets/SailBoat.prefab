@@ -65,7 +65,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sampleCount: 100
   density: 700
-  viscosity: 3
+  viscosity: 1
 --- !u!1 &4935219926159605673
 GameObject:
   m_ObjectHideFlags: 0
