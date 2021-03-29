@@ -14,9 +14,11 @@ public class BoundingBox
         this.Size = size;
     }
 
-    public Vector3 RandomPoint()
+    public Vector3 RandomPoint(float straightness = 0.0f)
     {
-        return new Vector3(Random.Range(0, Size.x), Random.Range(0, Size.y), Random.Range(0, Size.z)) + MinCorner;
+        return new Vector3(Random.Range(Size.x / 2 * straightness, Size.x - Size.x / 2 * straightness),
+                           Random.Range(Size.y / 2 * straightness, Size.y - Size.y / 2 * straightness),
+                           Random.Range(Size.z / 2 * straightness, Size.z - Size.z / 2 * straightness)) + MinCorner;
     }
 
 }

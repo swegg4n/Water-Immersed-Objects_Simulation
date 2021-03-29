@@ -92,21 +92,24 @@ public class Drag
 
             if (sp.LastPosition != null)
             {
-                Vector3 deltaVelocity = (sp.GlobalPosition - (Vector3)sp.LastPosition) / Time.deltaTime;
+                Vector3 deltaDistance = (sp.GlobalPosition - (Vector3)sp.LastPosition);
+                Vector3 deltaVelocity = deltaDistance / Time.deltaTime;
                 float velocitySquared = Vector3.SqrMagnitude(deltaVelocity);
 
-                float area = totalSurfaceArea / ms.MeshApproximation.SampleCount * Mathf.Max(Vector3.Dot(deltaVelocity.normalized, sampleNormals[i].normalized), 0); //Mathf.Max(Vector3.Dot(deltaVelocity.normalized, sampleNormals[i].normalized), 0) * totalSurfaceArea;
+                float area = totalSurfaceArea / ms.MeshApproximation.SampleCount * Mathf.Max(Vector3.Dot(deltaDistance.normalized, -sampleNormals[i].normalized), 0); //Mathf.Max(Vector3.Dot(deltaVelocity.normalized, sampleNormals[i].normalized), 0) * totalSurfaceArea;
 
                 float density = (ms.MeshApproximation.IsUnderWater[i] == 1) ? 997.0f : 1.225f;
 
-                Vector3 dragDirection = -sampleNormals[i].normalized;
+                Vector3 dragDirection = -deltaDistance.normalized;  //-sampleNormals[i].normalized;
 
-                Vector3 dragForce = dragCoefficient * density * velocitySquared * 0.5f * area * dragDirection;
+                float dragMagnitude = dragCoefficient * density * velocitySquared * 0.5f * area;
+                dragMagnitude = Mathf.Clamp(dragMagnitude, 0.0f, Vector3.Magnitude(deltaVelocity) * rb.mass);
+                Vector3 dragForce = dragMagnitude * dragDirection;
 
                 //  m^2 / s^2 * kg / m^3 * m^2    // (m^2 * kg * m^2) / (s^2 * m^3) <=> (kg m/s^2) <=> mass*acceleration = F
                 rb.AddForceAtPosition(dragForce, sp.GlobalPosition, ForceMode.Force);
 
-                debugDragForces[i] = dragForce;
+                debugDragForces[i] = dragForce / rb.mass * 100;
             }
             else
             {

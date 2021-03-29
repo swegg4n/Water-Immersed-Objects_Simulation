@@ -3,7 +3,6 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class Motor : MonoBehaviour
 {
-    [SerializeField] private Vector3 direction = Vector3.forward;
     [SerializeField] private float speed = 1.0f;
 
     private Rigidbody rb;
@@ -15,6 +14,6 @@ public class Motor : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rb.MovePosition(transform.position + direction * speed);
+        rb.AddForce(speed * -transform.forward, ForceMode.VelocityChange);
     }
 }

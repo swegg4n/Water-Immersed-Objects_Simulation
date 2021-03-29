@@ -39,7 +39,7 @@ public class MeshSampler
 
             for (int j = 0; j < sampleCount_distribution[i]; j++, c++)
             {
-                Vector3 sample_pos = bounds_stratified[j % bounds_stratified.Length].RandomPoint();
+                Vector3 sample_pos = bounds_stratified[j % bounds_stratified.Length].RandomPoint(1.0f);
                 SampleCorrection(ref sample_pos, collider);
 
                 SamplePoint sample = new SamplePoint(sample_pos - linkedTransforms[i].position, linkedTransforms[i].rotation, linkedTransforms[i]);
