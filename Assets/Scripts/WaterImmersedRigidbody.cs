@@ -49,6 +49,8 @@ public class WaterImmersedRigidbody : MonoBehaviour
             }
         }
 
+        MeshSurfaceArea.SurfaceAreaOfMesh(meshList[0], transformList[0]);
+
         Mesh[] meshes = meshList.ToArray();
         MeshRenderer[] meshRenderers = meshRendererList.ToArray();
         Transform[] transforms = transformList.ToArray();
@@ -63,6 +65,9 @@ public class WaterImmersedRigidbody : MonoBehaviour
             meshVolumes[i] = MeshVolume.VolumeOfMesh(meshes[i], transforms[i]);
         float totalMeshVolume = meshVolumes.Sum();
 
+        float totalSurfaceArea = MeshSurfaceArea.SurfaceAreaOfMesh(meshes, transforms);
+
+
         Rigidbody rb = GetComponent<Rigidbody>();
         rb.isKinematic = true;
         rb.useGravity = false;
@@ -73,7 +78,7 @@ public class WaterImmersedRigidbody : MonoBehaviour
         meshSampler = new MeshSampler(meshRenderers, transforms, DistributeSamples(boundsVolumes, totalBoundsVolume));
         gravity = new Gravity(rb, meshSampler);
         buoyancy = new Buoyancy(rb, meshSampler, totalMeshVolume);
-        waterDrag = new Drag(rb, meshSampler, dragCoefficient, meshes, transform);
+        waterDrag = new Drag(rb, meshSampler, dragCoefficient, meshes, transform, totalSurfaceArea);
 
         rb.isKinematic = false;
     }

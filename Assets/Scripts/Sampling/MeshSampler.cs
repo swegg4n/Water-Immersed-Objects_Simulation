@@ -32,6 +32,8 @@ public class MeshSampler
 
             BoundingBox bounds = new BoundingBox(meshRenderers[i].bounds.center, meshRenderers[i].bounds.size);
             BoundingBox[] bounds_stratified = GenerateStratifiedBounds(bounds, stratifiedDivisions);
+            bounds_stratified = bounds_stratified.OrderBy(x => Random.value).ToArray();
+
             debugBounds.Add(bounds_stratified);
 
 
@@ -44,13 +46,15 @@ public class MeshSampler
                 MeshApproximation.Samples[c] = sample;
             }
         }
-
     }
 
 
     private void SampleCorrection(ref Vector3 sample_pos, Collider collider)
     {
-        sample_pos = collider.ClosestPoint(sample_pos);
+        if (collider)
+        {
+            sample_pos = collider.ClosestPoint(sample_pos);
+        }
     }
 
     private BoundingBox[] GenerateStratifiedBounds(BoundingBox boundingBox_original, int divisions)
