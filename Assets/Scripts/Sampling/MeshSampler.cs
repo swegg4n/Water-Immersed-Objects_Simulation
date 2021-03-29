@@ -12,15 +12,15 @@ public class MeshSampler
     List<BoundingBox[]> debugBounds = new List<BoundingBox[]>(); //For Debugging
 
 
-    public MeshSampler(MeshRenderer[] meshRenderers, Transform[] linkedTransforms, int[] sampleCount_distribution)
+    public MeshSampler(MeshRenderer[] meshRenderers, Transform[] linkedTransforms, int[] sampleCount_distribution, float straightness)
     {
         this.meshRenderers = meshRenderers;
         this.MeshApproximation = new MeshApproximation(sampleCount_distribution);
 
-        SampleMesh(sampleCount_distribution, linkedTransforms);
+        SampleMesh(sampleCount_distribution, linkedTransforms, straightness);
     }
 
-    private void SampleMesh(int[] sampleCount_distribution, Transform[] linkedTransforms)
+    private void SampleMesh(int[] sampleCount_distribution, Transform[] linkedTransforms, float straightness)
     {
         int c = 0;
         for (int i = 0; i < sampleCount_distribution.Length; i++)
@@ -39,7 +39,7 @@ public class MeshSampler
 
             for (int j = 0; j < sampleCount_distribution[i]; j++, c++)
             {
-                Vector3 sample_pos = bounds_stratified[j % bounds_stratified.Length].RandomPoint(1.0f);
+                Vector3 sample_pos = bounds_stratified[j % bounds_stratified.Length].RandomPoint(straightness);
                 SampleCorrection(ref sample_pos, collider);
 
                 SamplePoint sample = new SamplePoint(sample_pos - linkedTransforms[i].position, linkedTransforms[i].rotation, linkedTransforms[i]);

@@ -35,7 +35,7 @@ public static class BenchmarkHelper
     public static Vector3[] MeshArrayToVerticesArray(Mesh[] originalMeshes, Transform transform)
     {
         Matrix4x4 localToWorld = transform.localToWorldMatrix;
-
+        
         Vector3[][] meshVertices = new Vector3[originalMeshes.Length][];
 
         int vertCount = 0;

@@ -9,6 +9,7 @@ public class WaterImmersedRigidbody : MonoBehaviour
     [SerializeField] private int sampleCount = 100;
     [SerializeField] private float density = 700.0f;
     [SerializeField] private float dragCoefficient = 1.0f;
+    [SerializeField] private float straightness = 0.0f;
 
     MeshSampler meshSampler;
     Gravity gravity;
@@ -75,7 +76,7 @@ public class WaterImmersedRigidbody : MonoBehaviour
         rb.drag = 0.0f;
         rb.angularDrag = 0.0f;
 
-        meshSampler = new MeshSampler(meshRenderers, transforms, DistributeSamples(boundsVolumes, totalBoundsVolume));
+        meshSampler = new MeshSampler(meshRenderers, transforms, DistributeSamples(boundsVolumes, totalBoundsVolume), straightness);
         gravity = new Gravity(rb, meshSampler);
         buoyancy = new Buoyancy(rb, meshSampler, totalMeshVolume);
         waterDrag = new Drag(rb, meshSampler, dragCoefficient, meshes, transform, totalSurfaceArea);
