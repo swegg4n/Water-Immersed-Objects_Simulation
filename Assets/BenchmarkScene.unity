@@ -506,11 +506,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 794617093353526383, guid: a3e06e7c3b44bf2428fb33e661e2eb77, type: 3}
       propertyPath: density
-      value: 600
+      value: 700
       objectReference: {fileID: 0}
     - target: {fileID: 794617093353526383, guid: a3e06e7c3b44bf2428fb33e661e2eb77, type: 3}
       propertyPath: sampleCount
-      value: 10000
+      value: 1000
       objectReference: {fileID: 0}
     - target: {fileID: 904578610855621510, guid: a3e06e7c3b44bf2428fb33e661e2eb77, type: 3}
       propertyPath: m_RootOrder

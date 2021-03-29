@@ -19,9 +19,4 @@ public class BoundingBox
         return new Vector3(Random.Range(0, Size.x), Random.Range(0, Size.y), Random.Range(0, Size.z)) + MinCorner;
     }
 
-    public bool Valid()
-    {
-        float shortestSide = Mathf.Min(Size.x, Size.y, Size.z);
-        return Physics.CheckSphere(Center, shortestSide / 2);
-    }
 }
