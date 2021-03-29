@@ -23,7 +23,7 @@ public class MeshApproximation
         UpdateUnderWaterSamples();
     }
 
-    private void UpdateSamplesPosition()
+    public void UpdateSamplesPosition()
     {
         foreach (SamplePoint sp in Samples)
         {

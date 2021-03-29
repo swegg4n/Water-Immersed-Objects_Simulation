@@ -1,29 +1,28 @@
-using UnityEngine;
-using System.Linq;
 using System;
 using System.Collections.Generic;
-using UnityEditor;
+using System.Linq;
+using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
 public class WaterImmersedRigidbody : MonoBehaviour
 {
     [SerializeField] private int sampleCount = 100;
     [SerializeField] private float density = 700.0f;
-    [SerializeField] private float viscosity = 1.0f;
+    [SerializeField] private float dragCoefficient = 1.0f;
 
     MeshSampler meshSampler;
     Gravity gravity;
     Buoyancy buoyancy;
-    WaterDrag waterDrag;
+    Drag waterDrag;
 
 
     [HideInInspector] public List<Mesh> meshList;
 
 
-    //private void Awake()
-    //{
-    //    Initialize();
-    //}
+    private void Awake()
+    {
+        Initialize();
+    }
 
 
     public void Initialize()
@@ -74,7 +73,7 @@ public class WaterImmersedRigidbody : MonoBehaviour
         meshSampler = new MeshSampler(meshRenderers, transforms, DistributeSamples(boundsVolumes, totalBoundsVolume));
         gravity = new Gravity(rb, meshSampler);
         buoyancy = new Buoyancy(rb, meshSampler, totalMeshVolume);
-        waterDrag = new WaterDrag(rb, meshSampler, viscosity);
+        waterDrag = new Drag(rb, meshSampler, dragCoefficient, meshes, transform);
 
         rb.isKinematic = false;
     }
@@ -84,7 +83,7 @@ public class WaterImmersedRigidbody : MonoBehaviour
     {
         this.sampleCount = sampleCount;
         this.density = density;
-        this.viscosity = viscosity;
+        this.dragCoefficient = viscosity;
 
         Initialize();
     }
@@ -119,27 +118,16 @@ public class WaterImmersedRigidbody : MonoBehaviour
     }
 
 
-    //private void OnDrawGizmos()
-    //{
-    //    if (debugParticles)
-    //    {
-    //        try
-    //        {
-    //            //meshSampler.DebugDraw();
-    //            gravity.DebugDraw();
-    //            buoyancy.DebugDraw();
-    //            waterDrag.DebugDraw();
-    //        }
-    //        catch (Exception) { }
-    //    }
-    //    if (debugBounds)
-    //    {
-    //        try
-    //        {
-    //            meshSampler.DebugDraw();
-    //        }
-    //        catch (Exception) { }
-    //    }
-    //}
+    private void OnDrawGizmos()
+    {
+        try
+        {
+            buoyancy.DebugDraw();
+            meshSampler.DebugDraw();
+            waterDrag.DebugDraw();
+        }
+        catch (Exception) { }
+
+    }
 
 }

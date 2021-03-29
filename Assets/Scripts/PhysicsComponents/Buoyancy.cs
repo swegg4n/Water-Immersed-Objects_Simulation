@@ -32,16 +32,16 @@ public class Buoyancy
     }
 
 
-    //public void DebugDraw()
-    //{
-    //    Gizmos.color = Color.blue;
-    //    for (int i = 0; i < ms.MeshApproximation.SampleCount; i++)
-    //    {
-    //        if (ms.MeshApproximation.IsUnderWater[i] == 1)
-    //        {
-    //            Gizmos.DrawSphere(ms.MeshApproximation.Samples[i].GlobalPosition, Gizmos.probeSize);
-    //        }
-    //    }
-    //}
+    public void DebugDraw()
+    {
+        Gizmos.color = Color.blue;
+        for (int i = 0; i < ms.MeshApproximation.SampleCount; i++)
+        {
+            if (ms.MeshApproximation.IsUnderWater[i] == 1)
+            {
+                Gizmos.DrawSphere(ms.MeshApproximation.Samples[i].GlobalPosition, Gizmos.probeSize);
+            }
+        }
+    }
 
 }

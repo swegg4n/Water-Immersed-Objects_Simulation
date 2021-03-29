@@ -92,25 +92,25 @@ public class MeshSampler
         MeshApproximation.Update();
     }
 
-    //public void DebugDraw()
-    //{
-    //    Gizmos.color = Color.white;
-    //    for (int i = 0; i < MeshApproximation.SampleCount; i++)
-    //    {
-    //        if (MeshApproximation.IsUnderWater[i] == 0)
-    //        {
-    //            Gizmos.DrawSphere(MeshApproximation.Samples[i].GlobalPosition, Gizmos.probeSize);
-    //        }
-    //    }
+    public void DebugDraw()
+    {
+        Gizmos.color = Color.white;
+        for (int i = 0; i < MeshApproximation.SampleCount; i++)
+        {
+            if (MeshApproximation.IsUnderWater[i] == 0)
+            {
+                Gizmos.DrawSphere(MeshApproximation.Samples[i].GlobalPosition, Gizmos.probeSize);
+            }
+        }
 
-    //    //Gizmos.color = Color.green;
-    //    //foreach (BoundingBox[] b_arr in bounds_stratified)
-    //    //{
-    //    //    foreach (BoundingBox b in b_arr)
-    //    //    {
-    //    //        Gizmos.DrawWireCube(b.Center, b.Size);
-    //    //    }
-    //    //}
-    //}
+        //Gizmos.color = Color.green;
+        //foreach (BoundingBox[] b_arr in bounds_stratified)
+        //{
+        //    foreach (BoundingBox b in b_arr)
+        //    {
+        //        Gizmos.DrawWireCube(b.Center, b.Size);
+        //    }
+        //}
+    }
 
 }
