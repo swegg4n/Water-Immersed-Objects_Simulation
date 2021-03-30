@@ -142,12 +142,12 @@ public class Drag
 
     public void DebugDraw()
     {
-        Gizmos.color = Color.cyan;
-        for (int i = 0; i < sampleNormals.Length; i++)
-        {
-            Vector3 samplePos = ms.MeshApproximation.Samples[i].GlobalPosition;
-            Gizmos.DrawLine(samplePos, samplePos + sampleNormals[i] * Gizmos.probeSize * 10);
-        }
+        //Gizmos.color = Color.cyan;
+        //for (int i = 0; i < sampleNormals.Length; i++)
+        //{
+        //    Vector3 samplePos = ms.MeshApproximation.Samples[i].GlobalPosition;
+        //    Gizmos.DrawLine(samplePos, samplePos + sampleNormals[i] * Gizmos.probeSize * 10);
+        //}
 
         Gizmos.color = Color.magenta;
         for (int i = 0; i < debugDragForces.Length; i++)
