@@ -3,6 +3,9 @@ using UnityEngine;
 public static class BenchmarkHelper
 {
 
+    /// <summary>
+    /// Calculate the average value of an array
+    /// </summary>
     public static T AverageValue<T>(T[] t)
     {
         dynamic avg = 0;
@@ -17,21 +20,34 @@ public static class BenchmarkHelper
     }
 
 
+    /// <summary>
+    /// Get the time this frame took to compute (in milliseconds)
+    /// </summary>
     public static float GetComputeTimeMS()
     {
         return Time.deltaTime * 1000;
     }
+
+    /// <summary>
+    /// Get the current frame rate
+    /// </summary>
     public static float GetFPS()
     {
         return 1.0f / Time.deltaTime;
     }
 
+    /// <summary>
+    /// Get (an approximation of) the current size of all allocated memory
+    /// </summary>
     public static long GetMemoryUsage()
     {
         return System.GC.GetTotalMemory(false); //Returns the memory usage in bytes
     }
 
 
+    /// <summary>
+    /// Get all vertices' global position from a collection of meshes
+    /// </summary>
     public static Vector3[] MeshArrayToVerticesArray(Mesh[] originalMeshes, Transform transform)
     {
         Matrix4x4 localToWorld = transform.localToWorldMatrix;
@@ -58,6 +74,9 @@ public static class BenchmarkHelper
         return originalVertices;
     }
 
+    /// <summary>
+    /// Get the square error between two collections of vertex positions
+    /// </summary>
     public static float VerticesSqrError(Vector3[] originalVertices, Vector3[] referenceVertices)
     {
         float[] verticesSqrError = new float[originalVertices.Length];

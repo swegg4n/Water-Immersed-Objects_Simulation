@@ -14,6 +14,11 @@ public class BoundingBox
         this.Size = size;
     }
 
+    /// <summary>
+    /// Gets a random point within the bounds.
+    /// Straightness ([0,1]) controls how close to the center of bounds the sample must be.
+    /// Straightness = 0  means the sample can be anywhere within the bounds.
+    /// Staightness = 1  means the sample must be placed in the center of the bounds
     public Vector3 RandomPoint(float straightness = 0.0f)
     {
         return new Vector3(Random.Range(Size.x / 2 * straightness, Size.x - Size.x / 2 * straightness),

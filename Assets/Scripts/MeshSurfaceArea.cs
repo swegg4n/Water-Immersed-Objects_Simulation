@@ -15,6 +15,9 @@ public static class MeshSurfaceArea
         return totalSurfaceArea;
     }
 
+    /// <summary>
+    /// See thesis paper for formula reference
+    /// </summary>
     public static float SurfaceAreaOfMesh(Mesh _mesh, Transform _transform)
     {
         int[] triangles = _mesh.triangles;

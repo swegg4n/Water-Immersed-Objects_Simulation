@@ -35,12 +35,15 @@ public class Drag
     }
 
 
+    /// <summary>
+    /// Maps all samples to a normal vector, based on the normal of the sample's closest vertex
+    /// </summary>
     private void CalculateSampleNormals(Mesh[] meshes, Transform transform)
     {
         sampleNormals = new Vector3[ms.MeshApproximation.SampleCount];
 
         Vector3[] vertexPositions = BenchmarkHelper.MeshArrayToVerticesArray(meshes, transform);
-        Vector3[] vertexNormals = MeshArrayToNormalsArray(meshes, transform);
+        Vector3[] vertexNormals = MeshArrayToNormalsArray(meshes);
 
         for (int i = 0; i < ms.MeshApproximation.SampleCount; i++)
         {
@@ -60,7 +63,10 @@ public class Drag
         }
     }
 
-    private Vector3[] MeshArrayToNormalsArray(Mesh[] meshes, Transform transform)
+    /// <summary>
+    /// Retrieves all vertex-normals from a collection of meshes
+    /// </summary>
+    private Vector3[] MeshArrayToNormalsArray(Mesh[] meshes)
     {
         Vector3[][] meshNormals = new Vector3[meshes.Length][];
 
@@ -85,6 +91,9 @@ public class Drag
     }
 
 
+    /// <summary>
+    /// Updates the normals based on the object's change in rotation
+    /// </summary>
     private void UpdateSampleNormals()
     {
         Matrix4x4 m = Matrix4x4.Rotate(transform.rotation * Quaternion.Inverse(lastRotation));
@@ -117,18 +126,18 @@ public class Drag
 
                 float area = totalSurfaceArea / ms.MeshApproximation.SampleCount * Vector3.Dot(deltaDistance.normalized, sampleNormals[i]);
 
-                float density = (ms.MeshApproximation.IsUnderWater[i] == 1) ? 997.0f : 1.225f;
+                float density = (ms.MeshApproximation.IsUnderWater[i] == 1) ? 997.0f : 1.225f;      // Water drag  vs  air drag 
 
-                Vector3 dragDirection = -sampleNormals[i]; //-deltaDistance.normalized;
+                Vector3 dragDirection = -sampleNormals[i];  //Force is directed against the normal, which contributes to both drag & lift
 
-                float dragMagnitude = dragCoefficient * density * velocitySquared * 0.5f * area;
+                float dragMagnitude = dragCoefficient * density * velocitySquared * 0.5f * area;    //See formula reference in paper
                 dragMagnitude = Mathf.Clamp(dragMagnitude, 0.0f, Vector3.Magnitude(deltaVelocity));
                 Vector3 dragForce = dragMagnitude * dragDirection;
 
-                //  m^2 / s^2 * kg / m^3 * m^2  <=>  (m^2 * kg * m^2) / (s^2 * m^3) <=> (kg m/s^2) <=> mass*acceleration = F
+                //  m^2 / s^2 * kg / m^3 * m^2  <=>  (m^2 * kg * m^2) / (s^2 * m^3) <=> (kg m/s^2) <=> mass * acceleration = F
                 rb.AddForceAtPosition(dragForce, sp.GlobalPosition, ForceMode.Force);
 
-                debugDragForces[i] = dragForce / rb.mass * 100;
+                debugDragForces[i] = dragForce;     //For debugging
             }
             else
             {
@@ -142,6 +151,7 @@ public class Drag
 
     public void DebugDraw()
     {
+        /*Debug normals*/
         //Gizmos.color = Color.cyan;
         //for (int i = 0; i < sampleNormals.Length; i++)
         //{
@@ -149,6 +159,7 @@ public class Drag
         //    Gizmos.DrawLine(samplePos, samplePos + sampleNormals[i] * Gizmos.probeSize * 10);
         //}
 
+        /*Debug drag forces*/
         Gizmos.color = Color.magenta;
         for (int i = 0; i < debugDragForces.Length; i++)
         {

@@ -22,10 +22,13 @@ public class WaterImmersedRigidbody : MonoBehaviour
 
     private void Awake()
     {
-        Initialize();
+        Initialize();   //OBS! THIS SHOULD NOT BE CALLED WHEN BENCHMARKING
     }
 
 
+    /// <summary>
+    /// Performs all initializaton and pre-computation of the object's components
+    /// </summary>
     public void Initialize()
     {
         meshList = new List<Mesh>();
@@ -81,6 +84,9 @@ public class WaterImmersedRigidbody : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// Sets the properties of this object and initializes it. (Used in benchmarking)
+    /// </summary>
     public void Set(int sampleCount, float density, float viscosity)
     {
         this.sampleCount = sampleCount;
@@ -90,7 +96,9 @@ public class WaterImmersedRigidbody : MonoBehaviour
         Initialize();
     }
 
-
+    /// <summary>
+    /// Distributes the particles among the meshes, based on the meshes' bounds volume
+    /// </summary>
     private int[] DistributeSamples(float[] boundsVolumes, float totalBoundsVolume)
     {
         int[] distribution = new int[boundsVolumes.Length];
@@ -111,6 +119,9 @@ public class WaterImmersedRigidbody : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// Updates all components
+    /// </summary>
     private void FixedUpdate()
     {
         meshSampler.Update();

@@ -15,6 +15,9 @@ public static class MeshVolume
         return totalVolume;
     }
 
+    /// <summary>
+    /// See thesis paper for formula reference
+    /// </summary>
     public static float VolumeOfMesh(Mesh _mesh, Transform _transform)
     {
         float volume = 0;

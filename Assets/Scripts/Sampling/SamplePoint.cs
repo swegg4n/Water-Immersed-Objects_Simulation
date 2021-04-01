@@ -18,6 +18,9 @@ public class SamplePoint
     private Transform linkedTransform;
 
 
+    /// <summary>
+    /// Transforms the local positon of the sample to a global position, based on translation and rotation
+    /// </summary>
     public void SetPosition()
     {
         Matrix4x4 m = Matrix4x4.Rotate(linkedTransform.rotation * Quaternion.Inverse(localRotation));

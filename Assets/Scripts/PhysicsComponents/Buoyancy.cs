@@ -19,21 +19,22 @@ public class Buoyancy
 
     public void Update()
     {
-        float underWaterSamples = (float)ms.MeshApproximation.IsUnderWater.Sum();
+        int underWaterSamples = ms.MeshApproximation.IsUnderWater.Sum();   //The number of samples under water
 
         if (underWaterSamples > 0)
         {
-            float underWaterRatio = underWaterSamples / ms.MeshApproximation.SampleCount;
-            float approxUnderwaterVolume = meshVolume * underWaterRatio;
+            float underWaterRatio = (float)underWaterSamples / ms.MeshApproximation.SampleCount;
+            float approxUnderwaterVolume = meshVolume * underWaterRatio;        //The approximated under water volume, based on the approximated sample under water ratio
 
-            Vector3 buoyantForce = -997 * Physics.gravity * approxUnderwaterVolume; //997 kg/m^3 is the density of water
-            rb.AddForceAtPosition(buoyantForce, ms.MeshApproximation.AverageUnderWaterSamplePosition());
+            Vector3 buoyantForce = -997.0f * Physics.gravity * approxUnderwaterVolume;      //997 kg/m^3 is the density of water
+            rb.AddForceAtPosition(buoyantForce, ms.MeshApproximation.AverageUnderWaterSamplePosition(), ForceMode.Force);
         }
     }
 
 
     public void DebugDraw()
     {
+        /*Debug submerged samples*/
         Gizmos.color = Color.blue;
         for (int i = 0; i < ms.MeshApproximation.SampleCount; i++)
         {

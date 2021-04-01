@@ -20,6 +20,10 @@ public class MeshSampler
         SampleMesh(sampleCount_distribution, linkedTransforms, straightness);
     }
 
+
+    /// <summary>
+    /// Stratified sampling of a chosen number of particles inside subdivided bounds
+    /// </summary>
     private void SampleMesh(int[] sampleCount_distribution, Transform[] linkedTransforms, float straightness)
     {
         int c = 0;
@@ -49,6 +53,9 @@ public class MeshSampler
     }
 
 
+    /// <summary>
+    /// Corrects the sample to be placed on the surface of the mesh, if the sample exists outside of the mesh
+    /// </summary>
     private void SampleCorrection(ref Vector3 sample_pos, Collider collider)
     {
         if (collider)
@@ -57,6 +64,9 @@ public class MeshSampler
         }
     }
 
+    /// <summary>
+    /// Divides a bounding box into several sub-bounding boxes based on the number of divisions
+    /// </summary>
     private BoundingBox[] GenerateStratifiedBounds(BoundingBox boundingBox_original, int divisions)
     {
         BoundingBox[] boundingBoxes = new BoundingBox[(int)Mathf.Pow((divisions + 1), 3.0f)];
@@ -89,6 +99,7 @@ public class MeshSampler
 
     public void DebugDraw()
     {
+        /*Debug non-submerged samples*/
         Gizmos.color = Color.white;
         for (int i = 0; i < MeshApproximation.SampleCount; i++)
         {
@@ -98,6 +109,7 @@ public class MeshSampler
             }
         }
 
+        /*Debug sub-bounding boxes (Note that these bounding boxes are NOT updated with the object's translation, for performace)*/
         //Gizmos.color = Color.green;
         //foreach (BoundingBox[] b_arr in debugBounds)
         //{
