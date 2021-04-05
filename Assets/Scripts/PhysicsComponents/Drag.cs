@@ -131,7 +131,10 @@ public class Drag
                 Vector3 dragDirection = -sampleNormals[i];  //Force is directed against the normal, which contributes to both drag & lift
 
                 float dragMagnitude = dragCoefficient * density * velocitySquared * 0.5f * area;    //See formula reference in paper
-                dragMagnitude = Mathf.Clamp(dragMagnitude, 0.0f, Vector3.Magnitude(deltaVelocity));
+
+                float maxDragForce = rb.mass * deltaVelocity.magnitude / Time.deltaTime; //F_{max} = m*a_{particle}
+                dragMagnitude = Mathf.Clamp(dragMagnitude, 0.0f, maxDragForce);
+
                 Vector3 dragForce = dragMagnitude * dragDirection;
 
                 //  m^2 / s^2 * kg / m^3 * m^2  <=>  (m^2 * kg * m^2) / (s^2 * m^3) <=> (kg m/s^2) <=> mass * acceleration = F

@@ -361,7 +361,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sampleCount: 1000
   density: 700
-  dragCoefficient: 5
+  dragCoefficient: 1
   straightness: 0
   meshList: []
 --- !u!114 &919132148330694152
@@ -376,4 +376,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b2adeacf3f6b1b49bcfa4b08eda4f0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
+  speed: 0
