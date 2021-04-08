@@ -158,27 +158,36 @@ public class Drag
 
     public void DebugDraw()
     {
-        /*Debug normals*/
-        Gizmos.color = Color.cyan;
-        for (int i = 0; i < sampleNormals.Length; i++)
+        /*Debug drag forces*/
+        if (DebugManager.Instance && DebugManager.Instance.DebugDrag)
         {
-            Vector3 samplePos = ms.MeshApproximation.Samples[i].GlobalPosition;
-            Gizmos.DrawLine(samplePos, samplePos + sampleNormals[i] * Gizmos.probeSize * 10);
+            Gizmos.color = Color.magenta;
+            for (int i = 0; i < debugDragForces.Length; i++)
+            {
+                Vector3 samplePos = ms.MeshApproximation.Samples[i].GlobalPosition;
+                Gizmos.DrawLine(samplePos, samplePos + debugDragForces[i]);
+            }
         }
 
-        /*Debug drag forces*/
-        Gizmos.color = Color.magenta;
-        for (int i = 0; i < debugDragForces.Length; i++)
+        /*Debug normals*/
+        if (DebugManager.Instance && DebugManager.Instance.DebugNormals)
         {
-            Vector3 samplePos = ms.MeshApproximation.Samples[i].GlobalPosition;
-            Gizmos.DrawLine(samplePos, samplePos + debugDragForces[i]);
+            Gizmos.color = Color.cyan;
+            for (int i = 0; i < sampleNormals.Length; i++)
+            {
+                Vector3 samplePos = ms.MeshApproximation.Samples[i].GlobalPosition;
+                Gizmos.DrawLine(samplePos, samplePos + sampleNormals[i] * Gizmos.probeSize * 10);
+            }
         }
 
         /*Debug vertices*/
-        Gizmos.color = Color.gray;
-        for (int i = 0; i < debugVertices.Length; i++)
+        if (DebugManager.Instance && DebugManager.Instance.DebugVertices)
         {
-            Gizmos.DrawSphere(debugVertices[i], 0.01f);
+            Gizmos.color = Color.gray;
+            for (int i = 0; i < debugVertices.Length; i++)
+            {
+                Gizmos.DrawSphere(debugVertices[i], Gizmos.probeSize);
+            }
         }
     }
 

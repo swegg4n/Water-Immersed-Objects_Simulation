@@ -98,24 +98,30 @@ public class MeshSampler
     public void DebugDraw()
     {
         /*Debug non-submerged samples*/
-        Gizmos.color = Color.white;
-        for (int i = 0; i < MeshApproximation.SampleCount; i++)
+        if (DebugManager.Instance && DebugManager.Instance.DebugAirSamples)
         {
-            if (MeshApproximation.IsUnderWater[i] == 0)
+            Gizmos.color = Color.white;
+            for (int i = 0; i < MeshApproximation.SampleCount; i++)
             {
-                Gizmos.DrawSphere(MeshApproximation.Samples[i].GlobalPosition, Gizmos.probeSize);
+                if (MeshApproximation.IsUnderWater[i] == 0)
+                {
+                    Gizmos.DrawSphere(MeshApproximation.Samples[i].GlobalPosition, Gizmos.probeSize);
+                }
             }
         }
 
-        ///*Debug sub-bounding boxes (Note that these bounding boxes are NOT updated with the object's translation, for performace)*/
-        //Gizmos.color = Color.green;
-        //foreach (BoundingBox[] b_arr in debugBounds)
-        //{
-        //    foreach (BoundingBox b in b_arr)
-        //    {
-        //        Gizmos.DrawWireCube(b.Center, b.Size);
-        //    }
-        //}
+        /*Debug sub-bounding boxes (Note that these bounding boxes are NOT updated with the object's translation, for performace)*/
+        if (DebugManager.Instance && DebugManager.Instance.DebugBounds)
+        {
+            Gizmos.color = Color.green;
+            foreach (BoundingBox[] b_arr in debugBounds)
+            {
+                foreach (BoundingBox b in b_arr)
+                {
+                    Gizmos.DrawWireCube(b.Center, b.Size);
+                }
+            }
+        }
     }
 
 }

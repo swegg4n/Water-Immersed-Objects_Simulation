@@ -37,12 +37,15 @@ public class Buoyancy
     public void DebugDraw()
     {
         /*Debug submerged samples*/
-        Gizmos.color = Color.blue;
-        for (int i = 0; i < ms.MeshApproximation.SampleCount; i++)
+        if (DebugManager.Instance && DebugManager.Instance.DebugUnderWaterSamples)
         {
-            if (ms.MeshApproximation.IsUnderWater[i] == 1)
+            Gizmos.color = Color.blue;
+            for (int i = 0; i < ms.MeshApproximation.SampleCount; i++)
             {
-                Gizmos.DrawSphere(ms.MeshApproximation.Samples[i].GlobalPosition, Gizmos.probeSize);
+                if (ms.MeshApproximation.IsUnderWater[i] == 1)
+                {
+                    Gizmos.DrawSphere(ms.MeshApproximation.Samples[i].GlobalPosition, Gizmos.probeSize);
+                }
             }
         }
     }
