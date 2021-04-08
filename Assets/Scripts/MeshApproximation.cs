@@ -4,7 +4,7 @@ using UnityEngine;
 public class MeshApproximation
 {
     public SamplePoint[] Samples { get; private set; }
-    public int[] IsUnderWater { get; private set; }
+    public byte[] IsUnderWater { get; private set; }
 
     public int SampleCount { get; set; }
 
@@ -14,7 +14,7 @@ public class MeshApproximation
         this.SampleCount = sampleCounts.Sum();
 
         this.Samples = new SamplePoint[SampleCount];
-        this.IsUnderWater = new int[SampleCount];
+        this.IsUnderWater = new byte[SampleCount];
     }
 
     public void Update()
@@ -34,7 +34,7 @@ public class MeshApproximation
     {
         for (int i = 0; i < SampleCount; i++)
         {
-            IsUnderWater[i] = (Samples[i].GlobalPosition.y <= WaveManager.instance.GetWaveHeight(Samples[i].GlobalPosition)) ? 1 : 0;
+            IsUnderWater[i] = (Samples[i].GlobalPosition.y <= WaveManager.instance.GetWaveHeight(Samples[i].GlobalPosition)) ? (byte)1 : (byte)0;
         }
     }
 

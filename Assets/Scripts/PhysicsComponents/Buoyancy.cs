@@ -19,11 +19,13 @@ public class Buoyancy
 
     public void Update()
     {
-        int underWaterSamples = ms.MeshApproximation.IsUnderWater.Sum();   //The number of samples under water
+        int underWaterSampleCount = 0;  //The number of samples under water
+        for (int i = 0; i < ms.MeshApproximation.IsUnderWater.Length; i++)
+            underWaterSampleCount += ms.MeshApproximation.IsUnderWater[i];
 
-        if (underWaterSamples > 0)
+        if (underWaterSampleCount > 0)
         {
-            float underWaterRatio = (float)underWaterSamples / ms.MeshApproximation.SampleCount;
+            float underWaterRatio = (float)underWaterSampleCount / ms.MeshApproximation.SampleCount;
             float approxUnderwaterVolume = meshVolume * underWaterRatio;        //The approximated under water volume, based on the approximated sample under water ratio
 
             Vector3 buoyantForce = -997.0f * Physics.gravity * approxUnderwaterVolume;      //997 kg/m^3 is the density of water

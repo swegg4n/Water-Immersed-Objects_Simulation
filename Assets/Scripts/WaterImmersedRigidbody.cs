@@ -51,23 +51,22 @@ public class WaterImmersedRigidbody : MonoBehaviour
             }
         }
 
-        MeshSurfaceArea.SurfaceAreaOfMesh(meshList[0], transformList[0]);
-
         meshes = meshList.ToArray();
-        BoundingBox[] boudingBoxes = new BoundingBox[meshes.Length];
         transforms = transformList.ToArray();
 
-        float[] boundsVolumes = new float[meshes.Length];
-        for (int i = 0; i < boundsVolumes.Length; i++)
+        float[] meshVolumes = new float[meshes.Length];
+        float[] surfaceAreas = new float[meshes.Length];
+        BoundingBox[] boudingBoxes = new BoundingBox[meshes.Length];
+
+        for (int i = 0; i < meshes.Length; i++)
         {
+            meshVolumes[i] = MeshVolume.VolumeOfMesh(meshes[i], transforms[i]);
+            surfaceAreas[i] = MeshSurfaceArea.SurfaceAreaOfMesh(meshes[i], transforms[i]);
             boudingBoxes[i] = new BoundingBox(meshes[i].bounds.center, meshes[i].bounds.size, transforms[i]);
-            boundsVolumes[i] = boudingBoxes[i].Volume;
         }
-        float totalBoundsVolume = boundsVolumes.Sum();
 
-        float totalMeshVolume = MeshVolume.VolumeOfMesh(meshes, transforms);
-        float totalSurfaceArea = MeshSurfaceArea.SurfaceAreaOfMesh(meshes, transforms);
-
+        float totalMeshVolume = meshVolumes.Sum();  //MeshVolume.VolumeOfMesh(meshes, transforms);
+        float totalSurfaceArea = surfaceAreas.Sum();    //MeshSurfaceArea.SurfaceAreaOfMesh(meshes, transforms);
 
         Rigidbody rb = GetComponent<Rigidbody>();
         rb.isKinematic = true;
@@ -76,7 +75,7 @@ public class WaterImmersedRigidbody : MonoBehaviour
         rb.drag = 0.0f;
         rb.angularDrag = 0.0f;
 
-        meshSampler = new MeshSampler(boudingBoxes, transforms, DistributeSamples(boundsVolumes, totalBoundsVolume), straightness);
+        meshSampler = new MeshSampler(boudingBoxes, transforms, DistributeSamples(meshVolumes, totalMeshVolume, surfaceAreas, totalSurfaceArea), straightness);
         gravity = new Gravity(rb, meshSampler);
         buoyancy = new Buoyancy(rb, meshSampler, totalMeshVolume);
         waterDrag = new Drag(rb, meshSampler, dragCoefficient, meshes, transforms, transform, totalSurfaceArea);
@@ -100,14 +99,16 @@ public class WaterImmersedRigidbody : MonoBehaviour
     /// <summary>
     /// Distributes the particles among the meshes, based on the meshes' bounds volume
     /// </summary>
-    private int[] DistributeSamples(float[] boundsVolumes, float totalBoundsVolume)
+    private int[] DistributeSamples(float[] meshVolumes, float totalMeshVolume, float[] surfaceAreas, float totalSurfaceArea)
     {
-        int[] distribution = new int[boundsVolumes.Length];
+        int[] distribution = new int[meshVolumes.Length];
         int totalDistributions = 0;
+
+        float total = totalMeshVolume * totalSurfaceArea;
 
         for (int i = 0; i < distribution.Length; i++)
         {
-            int d = (int)(boundsVolumes[i] / totalBoundsVolume * sampleCount);
+            int d = (int)((meshVolumes[i] * surfaceAreas[i]) / total * sampleCount);
             distribution[i] = d;
             totalDistributions += d;
         }
