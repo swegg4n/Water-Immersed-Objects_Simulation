@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Drag
@@ -17,33 +18,35 @@ public class Drag
     private Vector3[] debugDeltaDirForces;
 
 
-    public Drag(Rigidbody rb, MeshSampler ms, float dragCoefficient, Mesh[] meshes, Transform transform, float totalSurfaceArea)
+    public Drag(Rigidbody rb, MeshSampler ms, float dragCoefficient, Mesh[] meshes, Transform[] transforms, Transform modelTransform, float totalSurfaceArea)
     {
         this.rb = rb;
         this.ms = ms;
-        this.transform = transform;
+        this.transform = modelTransform;
         this.dragCoefficient = dragCoefficient;
         this.totalSurfaceArea = totalSurfaceArea;
 
         ms.MeshApproximation.UpdateSamplesPosition();
-        CalculateSampleNormals(meshes, transform);
+        CalculateSampleNormals(meshes, transforms);
 
-        lastRotation = transform.rotation;
+        lastRotation = modelTransform.rotation;
 
         debugDragForces = new Vector3[ms.MeshApproximation.SampleCount];
         debugDeltaDirForces = new Vector3[ms.MeshApproximation.SampleCount];
     }
 
 
+    Vector3[] debugVertices;
     /// <summary>
     /// Maps all samples to a normal vector, based on the normal of the sample's closest vertex
     /// </summary>
-    private void CalculateSampleNormals(Mesh[] meshes, Transform transform)
+    private void CalculateSampleNormals(Mesh[] meshes, Transform[] transforms)
     {
         sampleNormals = new Vector3[ms.MeshApproximation.SampleCount];
 
-        Vector3[] vertexPositions = BenchmarkHelper.MeshArrayToVerticesArray(meshes, transform);
-        Vector3[] vertexNormals = MeshArrayToNormalsArray(meshes);
+        Vector3[] vertexPositions = BenchmarkHelper.MeshArrayToVerticesArray(meshes, transforms);
+        debugVertices = vertexPositions;     //DEBUG
+        Vector3[] vertexNormals = MeshArrayToNormalsArray(meshes, transforms);
 
         for (int i = 0; i < ms.MeshApproximation.SampleCount; i++)
         {
@@ -66,7 +69,7 @@ public class Drag
     /// <summary>
     /// Retrieves all vertex-normals from a collection of meshes
     /// </summary>
-    private Vector3[] MeshArrayToNormalsArray(Mesh[] meshes)
+    private Vector3[] MeshArrayToNormalsArray(Mesh[] meshes, Transform[] transforms)
     {
         Vector3[][] meshNormals = new Vector3[meshes.Length][];
 
@@ -81,9 +84,10 @@ public class Drag
         int c = 0;
         for (int i = 0; i < meshNormals.Length; i++)
         {
+            Matrix4x4 rot = Matrix4x4.Rotate(transforms[i].rotation);
             for (int j = 0; j < meshNormals[i].Length; j++, c++)
             {
-                normals[c] = meshNormals[i][j];
+                normals[c] = rot.MultiplyPoint3x4(meshNormals[i][j]);
             }
         }
 
@@ -155,12 +159,12 @@ public class Drag
     public void DebugDraw()
     {
         /*Debug normals*/
-        //Gizmos.color = Color.cyan;
-        //for (int i = 0; i < sampleNormals.Length; i++)
-        //{
-        //    Vector3 samplePos = ms.MeshApproximation.Samples[i].GlobalPosition;
-        //    Gizmos.DrawLine(samplePos, samplePos + sampleNormals[i] * Gizmos.probeSize * 10);
-        //}
+        Gizmos.color = Color.cyan;
+        for (int i = 0; i < sampleNormals.Length; i++)
+        {
+            Vector3 samplePos = ms.MeshApproximation.Samples[i].GlobalPosition;
+            Gizmos.DrawLine(samplePos, samplePos + sampleNormals[i] * Gizmos.probeSize * 10);
+        }
 
         /*Debug drag forces*/
         Gizmos.color = Color.magenta;
@@ -168,6 +172,13 @@ public class Drag
         {
             Vector3 samplePos = ms.MeshApproximation.Samples[i].GlobalPosition;
             Gizmos.DrawLine(samplePos, samplePos + debugDragForces[i]);
+        }
+
+        /*Debug vertices*/
+        Gizmos.color = Color.gray;
+        for (int i = 0; i < debugVertices.Length; i++)
+        {
+            Gizmos.DrawSphere(debugVertices[i], 0.01f);
         }
     }
 

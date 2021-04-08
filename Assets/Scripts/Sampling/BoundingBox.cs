@@ -13,6 +13,12 @@ public class BoundingBox
         this.Center = center;
         this.Size = size;
     }
+    public BoundingBox(Vector3 center, Vector3 size, Transform transform)
+    {
+        Matrix4x4 m = Matrix4x4.Rotate(transform.rotation);
+        this.Center = m.MultiplyPoint(center) + transform.position;
+        this.Size = m.MultiplyPoint(size);
+    }
 
 
     public float Volume { get { return Size.x * Size.y * Size.z; } }

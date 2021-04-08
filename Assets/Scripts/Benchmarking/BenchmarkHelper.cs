@@ -48,10 +48,8 @@ public static class BenchmarkHelper
     /// <summary>
     /// Get all vertices' global position from a collection of meshes
     /// </summary>
-    public static Vector3[] MeshArrayToVerticesArray(Mesh[] originalMeshes, Transform transform)
+    public static Vector3[] MeshArrayToVerticesArray(Mesh[] originalMeshes, Transform[] transforms)
     {
-        Matrix4x4 localToWorld = transform.localToWorldMatrix;
-        
         Vector3[][] meshVertices = new Vector3[originalMeshes.Length][];
 
         int vertCount = 0;
@@ -65,9 +63,10 @@ public static class BenchmarkHelper
         int c = 0;
         for (int i = 0; i < meshVertices.Length; i++)
         {
+            Matrix4x4 rot = Matrix4x4.Rotate(transforms[i].rotation);
             for (int j = 0; j < meshVertices[i].Length; j++, c++)
             {
-                originalVertices[c] = localToWorld.MultiplyPoint3x4(meshVertices[i][j]);
+                originalVertices[c] = rot.MultiplyPoint3x4(meshVertices[i][j]) + transforms[i].position;
             }
         }
 

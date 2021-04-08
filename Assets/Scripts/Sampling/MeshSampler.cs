@@ -107,7 +107,7 @@ public class MeshSampler
             }
         }
 
-        /*Debug sub-bounding boxes (Note that these bounding boxes are NOT updated with the object's translation, for performace)*/
+        ///*Debug sub-bounding boxes (Note that these bounding boxes are NOT updated with the object's translation, for performace)*/
         //Gizmos.color = Color.green;
         //foreach (BoundingBox[] b_arr in debugBounds)
         //{

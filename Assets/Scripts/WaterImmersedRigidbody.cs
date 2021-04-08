@@ -17,7 +17,8 @@ public class WaterImmersedRigidbody : MonoBehaviour
     Drag waterDrag;
 
 
-    [HideInInspector] public List<Mesh> meshList;
+    [HideInInspector] public Mesh[] meshes;
+    [HideInInspector] public Transform[] transforms;
 
 
     private void Awake()
@@ -31,7 +32,7 @@ public class WaterImmersedRigidbody : MonoBehaviour
     /// </summary>
     public void Initialize()
     {
-        meshList = new List<Mesh>();
+        List<Mesh> meshList = new List<Mesh>();
         List<Transform> transformList = new List<Transform>();
 
         if (GetComponent<Collider>() != null)
@@ -52,14 +53,14 @@ public class WaterImmersedRigidbody : MonoBehaviour
 
         MeshSurfaceArea.SurfaceAreaOfMesh(meshList[0], transformList[0]);
 
-        Mesh[] meshes = meshList.ToArray();
+        meshes = meshList.ToArray();
         BoundingBox[] boudingBoxes = new BoundingBox[meshes.Length];
-        Transform[] transforms = transformList.ToArray();
+        transforms = transformList.ToArray();
 
         float[] boundsVolumes = new float[meshes.Length];
         for (int i = 0; i < boundsVolumes.Length; i++)
         {
-            boudingBoxes[i] = new BoundingBox(meshes[i].bounds.center, meshes[i].bounds.size);
+            boudingBoxes[i] = new BoundingBox(meshes[i].bounds.center, meshes[i].bounds.size, transforms[i]);
             boundsVolumes[i] = boudingBoxes[i].Volume;
         }
         float totalBoundsVolume = boundsVolumes.Sum();
@@ -78,7 +79,7 @@ public class WaterImmersedRigidbody : MonoBehaviour
         meshSampler = new MeshSampler(boudingBoxes, transforms, DistributeSamples(boundsVolumes, totalBoundsVolume), straightness);
         gravity = new Gravity(rb, meshSampler);
         buoyancy = new Buoyancy(rb, meshSampler, totalMeshVolume);
-        waterDrag = new Drag(rb, meshSampler, dragCoefficient, meshes, transform, totalSurfaceArea);
+        waterDrag = new Drag(rb, meshSampler, dragCoefficient, meshes, transforms, transform, totalSurfaceArea);
 
         rb.isKinematic = false;
     }

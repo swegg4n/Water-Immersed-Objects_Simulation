@@ -91,7 +91,9 @@ public class Benchmarking : MonoBehaviour
         GameObject referenceInstance = Instantiate(testCase.prefab, testCase.position, Quaternion.identity);
         referenceInstance.GetComponent<WaterImmersedRigidbody>().Set(REFERENCE_BOAT_SAMPLES, testCase.density, testCase.viscosity);
 
-        Mesh[] meshes = referenceInstance.GetComponent<WaterImmersedRigidbody>().meshList.ToArray();
+        Mesh[] meshes = referenceInstance.GetComponent<WaterImmersedRigidbody>().meshes;
+        Transform[] transforms = referenceInstance.GetComponent<WaterImmersedRigidbody>().transforms;
+
         referenceVertices = new Vector3[testCase.testLength][];
 
         int framesCounter = 0;
@@ -101,7 +103,7 @@ public class Benchmarking : MonoBehaviour
                 Debug.Log($"Progress:  {(framesCounter * 100) / testCase.testLength}%");  //DEBUG progress
 
             Time.timeScale = 0.0f;
-            referenceVertices[framesCounter] = BenchmarkHelper.MeshArrayToVerticesArray(meshes, referenceInstance.transform);
+            referenceVertices[framesCounter] = BenchmarkHelper.MeshArrayToVerticesArray(meshes, transforms);
             Time.timeScale = 1.0f;
 
             yield return new WaitForSecondsRealtime(Time.deltaTime);   // Wait for next frame
@@ -141,7 +143,7 @@ public class Benchmarking : MonoBehaviour
                         break;
 
                     case TypeOfTest.Correctness:
-                        testResult.SaveFrame(framesCounter, boatInstance.GetComponent<WaterImmersedRigidbody>().meshList.ToArray(), boatInstance.transform);
+                        testResult.SaveFrame(framesCounter, boatInstance.GetComponent<WaterImmersedRigidbody>().meshes, boatInstance.GetComponent<WaterImmersedRigidbody>().transforms);
                         break;
                 }
 
