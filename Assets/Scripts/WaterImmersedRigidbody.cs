@@ -32,13 +32,11 @@ public class WaterImmersedRigidbody : MonoBehaviour
     public void Initialize()
     {
         meshList = new List<Mesh>();
-        List<MeshRenderer> meshRendererList = new List<MeshRenderer>();
         List<Transform> transformList = new List<Transform>();
 
         if (GetComponent<Collider>() != null)
         {
             meshList.Add(GetComponent<MeshFilter>().sharedMesh);
-            meshRendererList.Add(GetComponent<MeshRenderer>());
             transformList.Add(transform);
         }
         for (int i = 0; i < transform.childCount; i++)
@@ -48,7 +46,6 @@ public class WaterImmersedRigidbody : MonoBehaviour
                 Transform child = transform.GetChild(i);
 
                 meshList.Add(child.GetComponent<MeshFilter>().sharedMesh);
-                meshRendererList.Add(child.GetComponent<MeshRenderer>());
                 transformList.Add(child);
             }
         }
@@ -56,12 +53,15 @@ public class WaterImmersedRigidbody : MonoBehaviour
         MeshSurfaceArea.SurfaceAreaOfMesh(meshList[0], transformList[0]);
 
         Mesh[] meshes = meshList.ToArray();
-        MeshRenderer[] meshRenderers = meshRendererList.ToArray();
+        BoundingBox[] boudingBoxes = new BoundingBox[meshes.Length];
         Transform[] transforms = transformList.ToArray();
 
         float[] boundsVolumes = new float[meshes.Length];
         for (int i = 0; i < boundsVolumes.Length; i++)
-            boundsVolumes[i] = meshRenderers[i].bounds.size.x * meshRenderers[i].bounds.size.y * meshRenderers[i].bounds.size.z;
+        {
+            boudingBoxes[i] = new BoundingBox(meshes[i].bounds.center, meshes[i].bounds.size);
+            boundsVolumes[i] = boudingBoxes[i].Volume;
+        }
         float totalBoundsVolume = boundsVolumes.Sum();
 
         float totalMeshVolume = MeshVolume.VolumeOfMesh(meshes, transforms);
@@ -75,7 +75,7 @@ public class WaterImmersedRigidbody : MonoBehaviour
         rb.drag = 0.0f;
         rb.angularDrag = 0.0f;
 
-        meshSampler = new MeshSampler(meshRenderers, transforms, DistributeSamples(boundsVolumes, totalBoundsVolume), straightness);
+        meshSampler = new MeshSampler(boudingBoxes, transforms, DistributeSamples(boundsVolumes, totalBoundsVolume), straightness);
         gravity = new Gravity(rb, meshSampler);
         buoyancy = new Buoyancy(rb, meshSampler, totalMeshVolume);
         waterDrag = new Drag(rb, meshSampler, dragCoefficient, meshes, transform, totalSurfaceArea);

@@ -14,6 +14,9 @@ public class BoundingBox
         this.Size = size;
     }
 
+
+    public float Volume { get { return Size.x * Size.y * Size.z; } }
+
     /// <summary>
     /// Gets a random point within the bounds.
     /// Straightness ([0,1]) controls how close to the center of bounds the sample must be.

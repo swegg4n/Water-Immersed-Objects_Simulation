@@ -5,26 +5,24 @@ using UnityEngine;
 
 public class MeshSampler
 {
-    private MeshRenderer[] meshRenderers;
     public MeshApproximation MeshApproximation { get; private set; }
 
 
     List<BoundingBox[]> debugBounds = new List<BoundingBox[]>(); //For Debugging
 
 
-    public MeshSampler(MeshRenderer[] meshRenderers, Transform[] linkedTransforms, int[] sampleCount_distribution, float straightness)
+    public MeshSampler(BoundingBox[] boudingBoxes, Transform[] linkedTransforms, int[] sampleCount_distribution, float straightness)
     {
-        this.meshRenderers = meshRenderers;
         this.MeshApproximation = new MeshApproximation(sampleCount_distribution);
 
-        SampleMesh(sampleCount_distribution, linkedTransforms, straightness);
+        SampleMesh(boudingBoxes, sampleCount_distribution, linkedTransforms, straightness);
     }
 
 
     /// <summary>
     /// Stratified sampling of a chosen number of particles inside subdivided bounds
     /// </summary>
-    private void SampleMesh(int[] sampleCount_distribution, Transform[] linkedTransforms, float straightness)
+    private void SampleMesh(BoundingBox[] boudingBoxes, int[] sampleCount_distribution, Transform[] linkedTransforms, float straightness)
     {
         int c = 0;
         for (int i = 0; i < sampleCount_distribution.Length; i++)
@@ -34,7 +32,7 @@ public class MeshSampler
 
             int stratifiedDivisions = Mathf.Max((int)Mathf.Pow(sampleCount_distribution[i], 1.0f / 3) - 1, 0);
 
-            BoundingBox bounds = new BoundingBox(meshRenderers[i].bounds.center, meshRenderers[i].bounds.size);
+            BoundingBox bounds = boudingBoxes[i];
             BoundingBox[] bounds_stratified = GenerateStratifiedBounds(bounds, stratifiedDivisions);
             bounds_stratified = bounds_stratified.OrderBy(x => Random.value).ToArray();
 

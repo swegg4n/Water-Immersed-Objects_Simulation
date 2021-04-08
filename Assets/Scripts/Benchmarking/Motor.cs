@@ -14,6 +14,6 @@ public class Motor : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rb.AddForce(speed * -transform.forward, ForceMode.Acceleration);
+        rb.AddForce(speed * transform.forward, ForceMode.Acceleration);
     }
 }
