@@ -31,8 +31,8 @@ public class Drag
 
         lastRotation = modelTransform.rotation;
 
-        debugDragForces = new Vector3[ms.MeshApproximation.SampleCount];
-        debugDeltaDirForces = new Vector3[ms.MeshApproximation.SampleCount];
+        debugDragForces = new Vector3[ms.MeshApproximation.OnHullIndices.Length];
+        debugDeltaDirForces = new Vector3[ms.MeshApproximation.OnHullIndices.Length];
     }
 
 
@@ -115,9 +115,9 @@ public class Drag
     {
         UpdateSampleNormals();
 
-        for (int i = 0; i < ms.MeshApproximation.SampleCount; i++)
+        for (int i = 0; i < ms.MeshApproximation.OnHullIndices.Length; i++)
         {
-            SamplePoint sp = ms.MeshApproximation.Samples[i];
+            SamplePoint sp = ms.MeshApproximation.Samples[ms.MeshApproximation.OnHullIndices[i]];
 
             if (sp.LastPosition != null)
             {
@@ -128,7 +128,7 @@ public class Drag
                 Vector3 deltaVelocity = deltaDistance / Time.deltaTime;
                 float velocitySquared = Vector3.SqrMagnitude(deltaVelocity);
 
-                float area = totalSurfaceArea / ms.MeshApproximation.SampleCount * Vector3.Dot(deltaDistance.normalized, sampleNormals[i]);
+                float area = totalSurfaceArea / ms.MeshApproximation.OnHullIndices.Length * Vector3.Dot(deltaDistance.normalized, sampleNormals[i]);
 
                 float density = (ms.MeshApproximation.IsUnderWater[i] == 1) ? 997.0f : 1.225f;      // Water drag  vs  air drag 
 
@@ -144,7 +144,7 @@ public class Drag
                 //  m^2 / s^2 * kg / m^3 * m^2  <=>  (m^2 * kg * m^2) / (s^2 * m^3) <=> (kg m/s^2) <=> mass * acceleration = F
                 rb.AddForceAtPosition(dragForce, sp.GlobalPosition, ForceMode.Force);
 
-                debugDragForces[i] = dragForce;     //For debugging
+                debugDragForces[i] = dragForce / 100.0f;     //For debugging
             }
             else
             {
@@ -153,6 +153,7 @@ public class Drag
 
             sp.LastPosition = sp.GlobalPosition;
         }
+
     }
 
 
@@ -164,7 +165,7 @@ public class Drag
             Gizmos.color = Color.magenta;
             for (int i = 0; i < debugDragForces.Length; i++)
             {
-                Vector3 samplePos = ms.MeshApproximation.Samples[i].GlobalPosition;
+                Vector3 samplePos = ms.MeshApproximation.Samples[ms.MeshApproximation.OnHullIndices[i]].GlobalPosition;
                 Gizmos.DrawLine(samplePos, samplePos + debugDragForces[i]);
             }
         }
@@ -183,7 +184,7 @@ public class Drag
         /*Debug vertices*/
         if (DebugManager.Instance && DebugManager.Instance.DebugVertices)
         {
-            Gizmos.color = Color.gray;
+            Gizmos.color = Color.black;
             for (int i = 0; i < debugVertices.Length; i++)
             {
                 Gizmos.DrawSphere(debugVertices[i], Gizmos.probeSize);
