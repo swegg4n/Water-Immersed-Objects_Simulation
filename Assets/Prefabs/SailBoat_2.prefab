@@ -53,7 +53,7 @@ GameObject:
   - component: {fileID: 7650029744765058086}
   - component: {fileID: 7650029744765058091}
   - component: {fileID: 7650029744765058088}
-  - component: {fileID: 7650029744765058089}
+  - component: {fileID: 7632647491998377507}
   m_Layer: 0
   m_Name: SailBoat_2
   m_TagString: Untagged
@@ -115,7 +115,7 @@ MonoBehaviour:
   straightness: 0
   meshes: []
   transforms: []
---- !u!114 &7650029744765058089
+--- !u!114 &7632647491998377507
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

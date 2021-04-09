@@ -64,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -876546973899608171, guid: cab852b50c8aeb341bc378a7d515e5b2, type: 3}
+  - {fileID: 2100000, guid: 7bcd1184f5edbdd44bcdca0f96acf5e3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -115,7 +115,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sampleCount: 1000
-  density: 700
+  density: 600
   dragCoefficient: 1
   liftCoefficient: 1
   straightness: 0
