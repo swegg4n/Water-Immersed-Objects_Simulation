@@ -9,12 +9,13 @@ public class WaterImmersedRigidbody : MonoBehaviour
     [SerializeField] private int sampleCount = 100;
     [SerializeField] private float density = 700.0f;
     [SerializeField] private float dragCoefficient = 1.0f;
+    [SerializeField] private float liftCoefficient = 1.0f;
     [SerializeField] private float straightness = 0.0f;
 
     MeshSampler meshSampler;
     Gravity gravity;
     Buoyancy buoyancy;
-    Drag waterDrag;
+    DragLift waterDrag;
 
 
     [HideInInspector] public Mesh[] meshes;
@@ -62,7 +63,7 @@ public class WaterImmersedRigidbody : MonoBehaviour
         {
             meshVolumes[i] = MeshVolume.VolumeOfMesh(meshes[i], transforms[i]);
             surfaceAreas[i] = MeshSurfaceArea.SurfaceAreaOfMesh(meshes[i], transforms[i]);
-            boudingBoxes[i] = new BoundingBox(meshes[i].bounds.center, meshes[i].bounds.size, transforms[i]);
+            boudingBoxes[i] = new BoundingBox(meshes[i].bounds.center, meshes[i].bounds.size * 1.5f, transforms[i]);
         }
 
         float totalMeshVolume = meshVolumes.Sum();  //MeshVolume.VolumeOfMesh(meshes, transforms);
@@ -78,7 +79,7 @@ public class WaterImmersedRigidbody : MonoBehaviour
         meshSampler = new MeshSampler(boudingBoxes, transforms, DistributeSamples(meshVolumes, totalMeshVolume, surfaceAreas, totalSurfaceArea), straightness);
         gravity = new Gravity(rb, meshSampler);
         buoyancy = new Buoyancy(rb, meshSampler, totalMeshVolume);
-        waterDrag = new Drag(rb, meshSampler, dragCoefficient, meshes, transforms, transform, totalSurfaceArea);
+        waterDrag = new DragLift(rb, meshSampler, dragCoefficient, liftCoefficient, meshes, transforms, transform, totalSurfaceArea);
 
         rb.isKinematic = false;
     }

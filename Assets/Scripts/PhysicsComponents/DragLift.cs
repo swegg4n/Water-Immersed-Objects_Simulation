@@ -1,29 +1,32 @@
 using System;
 using UnityEngine;
 
-public class Drag
+public class DragLift
 {
     private Rigidbody rb;
     private MeshSampler ms;
     private Transform transform;
 
     private float dragCoefficient;
+    private float liftCoefficient;
 
     private float totalSurfaceArea;
     private Vector3[] sampleNormals;
 
     private Quaternion lastRotation;
 
+
     private Vector3[] debugDragForces;
-    private Vector3[] debugDeltaDirForces;
+    private Vector3[] debugLiftForces;
 
 
-    public Drag(Rigidbody rb, MeshSampler ms, float dragCoefficient, Mesh[] meshes, Transform[] transforms, Transform modelTransform, float totalSurfaceArea)
+    public DragLift(Rigidbody rb, MeshSampler ms, float dragCoefficient, float liftCoefficient, Mesh[] meshes, Transform[] transforms, Transform modelTransform, float totalSurfaceArea)
     {
         this.rb = rb;
         this.ms = ms;
         this.transform = modelTransform;
         this.dragCoefficient = dragCoefficient;
+        this.liftCoefficient = liftCoefficient;
         this.totalSurfaceArea = totalSurfaceArea;
 
         ms.MeshApproximation.UpdateSamplesPosition();
@@ -32,7 +35,7 @@ public class Drag
         lastRotation = modelTransform.rotation;
 
         debugDragForces = new Vector3[ms.MeshApproximation.OnHullIndices.Length];
-        debugDeltaDirForces = new Vector3[ms.MeshApproximation.OnHullIndices.Length];
+        debugLiftForces = new Vector3[ms.MeshApproximation.OnHullIndices.Length];
     }
 
 
@@ -50,19 +53,16 @@ public class Drag
 
         for (int i = 0; i < ms.MeshApproximation.SampleCount; i++)
         {
-            float closestVertexDistance = float.MaxValue;
-            int closestVertIndex = -1;
+            sampleNormals[i] = Vector3.zero;
 
             for (int j = 0; j < vertexPositions.Length; j++)
             {
-                float sqrDistance = Vector3.SqrMagnitude(ms.MeshApproximation.Samples[i].GlobalPosition - vertexPositions[j]);
-                if (sqrDistance < closestVertexDistance)
-                {
-                    closestVertexDistance = sqrDistance;
-                    closestVertIndex = j;
-                }
+                float inverseDistance = 1.0f / Vector3.Distance(ms.MeshApproximation.Samples[i].GlobalPosition, vertexPositions[j]);
+
+                sampleNormals[i] -= vertexNormals[j] * inverseDistance;
             }
-            sampleNormals[i] = vertexNormals[closestVertIndex];
+
+            sampleNormals[i].Normalize();
         }
     }
 
@@ -122,33 +122,39 @@ public class Drag
             if (sp.LastPosition != null)
             {
                 Vector3 deltaDistance = (sp.GlobalPosition - (Vector3)sp.LastPosition);
-
-                debugDeltaDirForces[i] = deltaDistance;
-
                 Vector3 deltaVelocity = deltaDistance / Time.deltaTime;
+
                 float velocitySquared = Vector3.SqrMagnitude(deltaVelocity);
-
-                float area = totalSurfaceArea / ms.MeshApproximation.OnHullIndices.Length * Vector3.Dot(deltaDistance.normalized, sampleNormals[i]);
-
+                float surfaceArea = totalSurfaceArea / ms.MeshApproximation.OnHullIndices.Length * Vector3.Dot(deltaDistance.normalized, sampleNormals[i]);
                 float density = (ms.MeshApproximation.IsUnderWater[i] == 1) ? 997.0f : 1.225f;      // Water drag  vs  air drag 
 
-                Vector3 dragDirection = -sampleNormals[i];  //Force is directed against the normal, which contributes to both drag & lift
 
-                float dragMagnitude = dragCoefficient * density * velocitySquared * 0.5f * area;    //See formula reference in paper
+                Vector3 dragDirection = -deltaDistance.normalized;
+                Vector3 T = (Vector3.Cross(deltaVelocity, -sampleNormals[i]));
+                Vector3 liftDirection = Vector3.Cross(T, deltaVelocity).normalized;
+
+
+                float dragMagnitude = dragCoefficient * density * velocitySquared * 0.5f * surfaceArea;    //See formula reference in paper
+                float liftMagnitude = liftCoefficient * density * velocitySquared * 0.5f * surfaceArea;
 
                 float maxDragForce = rb.mass * deltaVelocity.magnitude / Time.deltaTime; //F_{max} = m*a_{particle}
                 dragMagnitude = Mathf.Clamp(dragMagnitude, 0.0f, maxDragForce);
 
+
                 Vector3 dragForce = dragMagnitude * dragDirection;
+                Vector3 liftForce = liftMagnitude * liftDirection;
 
                 //  m^2 / s^2 * kg / m^3 * m^2  <=>  (m^2 * kg * m^2) / (s^2 * m^3) <=> (kg m/s^2) <=> mass * acceleration = F
                 rb.AddForceAtPosition(dragForce, sp.GlobalPosition, ForceMode.Force);
+                rb.AddForceAtPosition(liftForce, sp.GlobalPosition, ForceMode.Force);
 
                 debugDragForces[i] = dragForce / 100.0f;     //For debugging
+                debugLiftForces[i] = liftForce / 100.0f;
             }
             else
             {
                 debugDragForces[i] = Vector3.zero;
+                debugLiftForces[i] = Vector3.zero;
             }
 
             sp.LastPosition = sp.GlobalPosition;
@@ -162,13 +168,25 @@ public class Drag
         /*Debug drag forces*/
         if (DebugManager.Instance && DebugManager.Instance.DebugDrag)
         {
-            Gizmos.color = Color.magenta;
+            Gizmos.color = Color.blue;
             for (int i = 0; i < debugDragForces.Length; i++)
             {
                 Vector3 samplePos = ms.MeshApproximation.Samples[ms.MeshApproximation.OnHullIndices[i]].GlobalPosition;
                 Gizmos.DrawLine(samplePos, samplePos + debugDragForces[i]);
             }
         }
+
+        /*Debug lift forces*/
+        if (DebugManager.Instance && DebugManager.Instance.DebugLift)
+        {
+            Gizmos.color = Color.green;
+            for (int i = 0; i < debugLiftForces.Length; i++)
+            {
+                Vector3 samplePos = ms.MeshApproximation.Samples[ms.MeshApproximation.OnHullIndices[i]].GlobalPosition;
+                Gizmos.DrawLine(samplePos, samplePos + debugLiftForces[i]);
+            }
+        }
+
 
         /*Debug normals*/
         if (DebugManager.Instance && DebugManager.Instance.DebugNormals)
