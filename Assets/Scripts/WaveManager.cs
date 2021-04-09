@@ -6,7 +6,7 @@ public class WaveManager : MonoBehaviour
     public static WaveManager instance;
 
     [SerializeField] private float amplitude = 0.0f;
-    [Range(0.025f, 100.0f)] [SerializeField] private float ordinaryFrequency = 1.5f;
+    [Range(10.0f, 200.0f)] [SerializeField] private float ordinaryFrequency = 1.5f;
     [SerializeField] private float angluarFrequency = 1.0f;
     private float phase = 0.0f;
 
@@ -63,13 +63,13 @@ public class WaveManager : MonoBehaviour
 
     public void OnDrawGizmos()
     {
-        if (debug)
+        if (debug && meshFilter)
         {
             Vector3[] verts = meshFilter.sharedMesh.vertices;
             for (int i = 0; i < verts.Length; i++)
             {
                 verts[i].y = GetWaveHeight(verts[i]);
-                Gizmos.DrawWireSphere(verts[i], Gizmos.probeSize);
+                Gizmos.DrawWireSphere(verts[i], Gizmos.probeSize * 10);
             }
         }
     }

@@ -495,10 +495,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7285314308431416338, guid: 9251f69c73f463c4a98ad06ac5ebc404, type: 3}
-      propertyPath: visual
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7627913673178952005, guid: 9251f69c73f463c4a98ad06ac5ebc404, type: 3}
       propertyPath: m_Name
       value: OceanPlane
@@ -559,14 +555,6 @@ PrefabInstance:
     - target: {fileID: 7650029744765058087, guid: 8569c83b923a8f345bba5de73a1021ed, type: 3}
       propertyPath: m_Name
       value: SailBoat_2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7650029744765058087, guid: 8569c83b923a8f345bba5de73a1021ed, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7650029744765058089, guid: 8569c83b923a8f345bba5de73a1021ed, type: 3}
-      propertyPath: speed
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8569c83b923a8f345bba5de73a1021ed, type: 3}

@@ -95,5 +95,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   amplitude: 0
-  ordinaryFrequency: 1.5
-  angluarFrequency: 1
+  ordinaryFrequency: 10
+  angluarFrequency: 0
+  visual: 1
+  debug: 0
