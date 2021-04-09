@@ -15,9 +15,10 @@ public class DragLift
 
     private Quaternion lastRotation;
 
-
+    Vector3[] debugVertices;
     private Vector3[] debugDragForces;
     private Vector3[] debugLiftForces;
+
 
 
     public DragLift(Rigidbody rb, MeshSampler ms, float dragCoefficient, float liftCoefficient, Mesh[] meshes, Transform[] transforms, Transform modelTransform, float totalSurfaceArea)
@@ -39,7 +40,6 @@ public class DragLift
     }
 
 
-    Vector3[] debugVertices;
     /// <summary>
     /// Maps all samples to a normal vector, based on the normal of the sample's closest vertex
     /// </summary>
@@ -55,16 +55,23 @@ public class DragLift
         {
             sampleNormals[i] = Vector3.zero;
 
+            //Array.Sort(vertexPositions, x => Vector3.SqrMagnitude(x - ms.MeshApproximation.Samples[i].GlobalPosition));
             for (int j = 0; j < vertexPositions.Length; j++)
             {
-                float inverseDistance = 1.0f / Vector3.Distance(ms.MeshApproximation.Samples[i].GlobalPosition, vertexPositions[j]);
+                float inverseDistance = 1.0f / Mathf.Pow(Vector3.SqrMagnitude(ms.MeshApproximation.Samples[i].GlobalPosition - vertexPositions[j]), 2.0f);
 
-                sampleNormals[i] -= vertexNormals[j] * inverseDistance;
+                sampleNormals[i] += (vertexNormals[j] * inverseDistance) / vertexNormals.Length;
             }
 
             sampleNormals[i].Normalize();
         }
     }
+    //public static int CompareDistance(Vector3 v1, Vector3 v2)
+    //{
+    //    return (int)Vector3.SqrMagnitude(v1 - v2);
+    //}
+
+
 
     /// <summary>
     /// Retrieves all vertex-normals from a collection of meshes
