@@ -63,7 +63,11 @@ public class WaterImmersedRigidbody : MonoBehaviour
         {
             meshVolumes[i] = MeshVolume.VolumeOfMesh(meshes[i], transforms[i]);
             surfaceAreas[i] = MeshSurfaceArea.SurfaceAreaOfMesh(meshes[i], transforms[i]);
-            boudingBoxes[i] = new BoundingBox(meshes[i].bounds.center, meshes[i].bounds.size * 1.5f, transforms[i]);
+            boudingBoxes[i] = new BoundingBox(meshes[i].bounds.center, 
+                new Vector3(meshes[i].bounds.size.x * transform.localScale.x,
+                            meshes[i].bounds.size.y * transform.localScale.y, 
+                            meshes[i].bounds.size.z * transform.localScale.z) 
+                * 1.5f, transforms[i]);
         }
 
         float totalMeshVolume = meshVolumes.Sum();  //MeshVolume.VolumeOfMesh(meshes, transforms);

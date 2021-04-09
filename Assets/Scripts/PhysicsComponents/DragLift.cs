@@ -55,7 +55,6 @@ public class DragLift
         {
             sampleNormals[i] = Vector3.zero;
 
-            //Array.Sort(vertexPositions, x => Vector3.SqrMagnitude(x - ms.MeshApproximation.Samples[i].GlobalPosition));
             for (int j = 0; j < vertexPositions.Length; j++)
             {
                 float inverseDistance = 1.0f / Mathf.Pow(Vector3.SqrMagnitude(ms.MeshApproximation.Samples[i].GlobalPosition - vertexPositions[j]), 2.0f);
@@ -66,11 +65,6 @@ public class DragLift
             sampleNormals[i].Normalize();
         }
     }
-    //public static int CompareDistance(Vector3 v1, Vector3 v2)
-    //{
-    //    return (int)Vector3.SqrMagnitude(v1 - v2);
-    //}
-
 
 
     /// <summary>
