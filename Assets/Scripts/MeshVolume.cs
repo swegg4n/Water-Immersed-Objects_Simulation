@@ -33,6 +33,8 @@ public static class MeshVolume
         Vector3 localScale = _transform.localScale;
         volume *= (localScale.x * localScale.y * localScale.z);
 
+        //Debug.Log($"The volume of  {_mesh.name}  is  {volume}  volume units");
+
         return Mathf.Abs(volume);
     }
 

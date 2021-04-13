@@ -11,11 +11,7 @@ public class DragLift
     private float liftCoefficient;
 
     private float totalSurfaceArea;
-    private Vector3[] sampleNormals;
 
-    private Quaternion lastRotation;
-
-    Vector3[] debugVertices;
     private Vector3[] debugDragForces;
     private Vector3[] debugLiftForces;
 
@@ -31,91 +27,91 @@ public class DragLift
         this.totalSurfaceArea = totalSurfaceArea;
 
         ms.MeshApproximation.UpdateSamplesPosition();
-        CalculateSampleNormals(meshes, transforms);
-
-        lastRotation = modelTransform.rotation;
 
         debugDragForces = new Vector3[ms.MeshApproximation.OnHullIndices.Length];
         debugLiftForces = new Vector3[ms.MeshApproximation.OnHullIndices.Length];
     }
 
 
-    /// <summary>
-    /// Maps all samples to a normal vector, based on the normal of the sample's closest vertex
-    /// </summary>
-    private void CalculateSampleNormals(Mesh[] meshes, Transform[] transforms)
-    {
-        sampleNormals = new Vector3[ms.MeshApproximation.SampleCount];
+    ///// <summary>
+    ///// Maps all samples to a normal vector, based on the normal of the sample's closest vertex
+    ///// </summary>
+    //private void CalculateSampleNormals(Mesh[] meshes, Transform[] transforms)
+    //{
+    //    sampleNormals = new Vector3[ms.MeshApproximation.SampleCount];
 
-        Vector3[] vertexPositions = BenchmarkHelper.MeshArrayToVerticesArray(meshes, transforms);
-        debugVertices = vertexPositions;     //DEBUG
-        Vector3[] vertexNormals = MeshArrayToNormalsArray(meshes, transforms);
+    //    //for (int i = 0; i < ms.MeshApproximation.SampleCount; i++)
+    //    //{
+    //    //    Vector3 boundsClosestPos =mesh
+    //    //}
 
-        for (int i = 0; i < ms.MeshApproximation.SampleCount; i++)
-        {
-            sampleNormals[i] = Vector3.zero;
+    //    //Vector3[] vertexPositions = BenchmarkHelper.MeshArrayToVerticesArray(meshes, transforms);
+    //    //debugVertices = vertexPositions;     //DEBUG
+    //    //Vector3[] vertexNormals = MeshArrayToNormalsArray(meshes, transforms);
 
-            for (int j = 0; j < vertexPositions.Length; j++)
-            {
-                float inverseDistance = 1.0f / Mathf.Pow(Vector3.SqrMagnitude(ms.MeshApproximation.Samples[i].GlobalPosition - vertexPositions[j]), 2.0f);
+    //    //for (int i = 0; i < ms.MeshApproximation.SampleCount; i++)
+    //    //{
+    //    //    sampleNormals[i] = Vector3.zero;
 
-                sampleNormals[i] += (vertexNormals[j] * inverseDistance) / vertexNormals.Length;
-            }
+    //    //    for (int j = 0; j < vertexPositions.Length; j++)
+    //    //    {
+    //    //        float inverseDistance = 1.0f / Mathf.Pow(Vector3.SqrMagnitude(ms.MeshApproximation.Samples[i].GlobalPosition - vertexPositions[j]), 2.0f);
 
-            sampleNormals[i].Normalize();
-        }
-    }
+    //    //        sampleNormals[i] += (vertexNormals[j] * inverseDistance) / vertexNormals.Length;
+    //    //    }
 
-
-    /// <summary>
-    /// Retrieves all vertex-normals from a collection of meshes
-    /// </summary>
-    private Vector3[] MeshArrayToNormalsArray(Mesh[] meshes, Transform[] transforms)
-    {
-        Vector3[][] meshNormals = new Vector3[meshes.Length][];
-
-        int normalsCount = 0;
-        for (int i = 0; i < meshes.Length; i++)
-        {
-            meshNormals[i] = meshes[i].normals;
-            normalsCount += meshes[i].vertexCount;
-        }
-        Vector3[] normals = new Vector3[normalsCount];
-
-        int c = 0;
-        for (int i = 0; i < meshNormals.Length; i++)
-        {
-            Matrix4x4 rot = Matrix4x4.Rotate(transforms[i].rotation);
-            for (int j = 0; j < meshNormals[i].Length; j++, c++)
-            {
-                normals[c] = rot.MultiplyPoint3x4(meshNormals[i][j]);
-            }
-        }
-
-        return normals;
-    }
+    //    //    sampleNormals[i].Normalize();
+    //    //}
+    //}
 
 
-    /// <summary>
-    /// Updates the normals based on the object's change in rotation
-    /// </summary>
-    private void UpdateSampleNormals()
-    {
-        Matrix4x4 m = Matrix4x4.Rotate(transform.rotation * Quaternion.Inverse(lastRotation));
+    ///// <summary>
+    ///// Retrieves all vertex-normals from a collection of meshes
+    ///// </summary>
+    //private Vector3[] MeshArrayToNormalsArray(Mesh[] meshes, Transform[] transforms)
+    //{
+    //    Vector3[][] meshNormals = new Vector3[meshes.Length][];
 
-        for (int i = 0; i < sampleNormals.Length; i++)
-        {
-            sampleNormals[i] = m.MultiplyPoint3x4(sampleNormals[i]);
-        }
+    //    int normalsCount = 0;
+    //    for (int i = 0; i < meshes.Length; i++)
+    //    {
+    //        meshNormals[i] = meshes[i].normals;
+    //        normalsCount += meshes[i].vertexCount;
+    //    }
+    //    Vector3[] normals = new Vector3[normalsCount];
 
-        lastRotation = transform.rotation;
-    }
+    //    int c = 0;
+    //    for (int i = 0; i < meshNormals.Length; i++)
+    //    {
+    //        Matrix4x4 rot = Matrix4x4.Rotate(transforms[i].rotation);
+    //        for (int j = 0; j < meshNormals[i].Length; j++, c++)
+    //        {
+    //            normals[c] = rot.MultiplyPoint3x4(meshNormals[i][j]);
+    //        }
+    //    }
+
+    //    return normals;
+    //}
+
+
+    ///// <summary>
+    ///// Updates the normals based on the object's change in rotation
+    ///// </summary>
+    //private void UpdateSampleNormals()
+    //{
+    //    Matrix4x4 m = Matrix4x4.Rotate(transform.rotation * Quaternion.Inverse(lastRotation));
+
+    //    for (int i = 0; i < sampleNormals.Length; i++)
+    //    {
+    //        sampleNormals[i] = m.MultiplyPoint3x4(sampleNormals[i]);
+    //    }
+
+    //    lastRotation = transform.rotation;
+    //}
 
 
     public void Update()
     {
-        UpdateSampleNormals();
-
         for (int i = 0; i < ms.MeshApproximation.OnHullIndices.Length; i++)
         {
             SamplePoint sp = ms.MeshApproximation.Samples[ms.MeshApproximation.OnHullIndices[i]];
@@ -126,12 +122,14 @@ public class DragLift
                 Vector3 deltaVelocity = deltaDistance / Time.deltaTime;
 
                 float velocitySquared = Vector3.SqrMagnitude(deltaVelocity);
-                float surfaceArea = totalSurfaceArea / ms.MeshApproximation.OnHullIndices.Length * Vector3.Dot(deltaDistance.normalized, sampleNormals[i]);
-                float density = (ms.MeshApproximation.IsUnderWater[i] == 1) ? 997.0f : 1.225f;      // Water drag  vs  air drag 
+                float surfaceArea = totalSurfaceArea / ms.MeshApproximation.OnHullIndices.Length * 
+                    Mathf.Max(Vector3.Dot(deltaDistance.normalized, sp.Normal), 0.0f);
+
+                float density = (ms.MeshApproximation.IsUnderWater[ms.MeshApproximation.OnHullIndices[i]] == 1) ? 997.0f : 1.225f;      // Water drag  vs  air drag 
 
 
                 Vector3 dragDirection = -deltaDistance.normalized;
-                Vector3 T = (Vector3.Cross(deltaVelocity, -sampleNormals[i]));
+                Vector3 T = (Vector3.Cross(deltaVelocity, -sp.Normal));
                 Vector3 liftDirection = Vector3.Cross(T, deltaVelocity).normalized;
 
 
@@ -188,27 +186,6 @@ public class DragLift
             }
         }
 
-
-        /*Debug normals*/
-        if (DebugManager.Instance && DebugManager.Instance.DebugNormals)
-        {
-            Gizmos.color = Color.cyan;
-            for (int i = 0; i < sampleNormals.Length; i++)
-            {
-                Vector3 samplePos = ms.MeshApproximation.Samples[i].GlobalPosition;
-                Gizmos.DrawLine(samplePos, samplePos + sampleNormals[i] * Gizmos.probeSize * 10);
-            }
-        }
-
-        /*Debug vertices*/
-        if (DebugManager.Instance && DebugManager.Instance.DebugVertices)
-        {
-            Gizmos.color = Color.black;
-            for (int i = 0; i < debugVertices.Length; i++)
-            {
-                Gizmos.DrawSphere(debugVertices[i], Gizmos.probeSize);
-            }
-        }
     }
 
 }

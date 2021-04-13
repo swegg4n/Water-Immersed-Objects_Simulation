@@ -22,6 +22,7 @@ public class MeshApproximation
     public void Update()
     {
         UpdateSamplesPosition();
+        UpdateNormals();
         UpdateUnderWaterSamples();
     }
 
@@ -32,6 +33,14 @@ public class MeshApproximation
             sp.SetPosition();
         }
     }
+    public void UpdateNormals()
+    {
+        foreach (SamplePoint sp in Samples)
+        {
+            sp.UpdateNormals();
+        }
+    }
+
     private void UpdateUnderWaterSamples()
     {
         for (int i = 0; i < SampleCount; i++)

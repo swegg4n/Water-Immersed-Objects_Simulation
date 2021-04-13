@@ -134,10 +134,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Basic
       objectReference: {fileID: 0}
-    - target: {fileID: 8101059835589951873, guid: a5d580ae820f9b84096c609bf733a645, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8874182894964595515, guid: a5d580ae820f9b84096c609bf733a645, type: 3}
       propertyPath: m_RootOrder
       value: 5
@@ -436,13 +432,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0768e5315154e104e9b4702dc2500cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugAirSamples: 1
-  debugUnderWaterSamples: 1
+  debugAirSamples: 0
+  debugUnderWaterSamples: 0
   debugDrag: 1
   debugLift: 1
   debugOnHull: 0
-  debugNormals: 0
-  debugVertices: 0
+  debugNormals: 1
   debugBounds: 0
 --- !u!1001 &7285314309635188151
 PrefabInstance:
@@ -555,6 +550,14 @@ PrefabInstance:
     - target: {fileID: 7650029744765058087, guid: 8569c83b923a8f345bba5de73a1021ed, type: 3}
       propertyPath: m_Name
       value: SailBoat_2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7650029744765058087, guid: 8569c83b923a8f345bba5de73a1021ed, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7650029744765058088, guid: 8569c83b923a8f345bba5de73a1021ed, type: 3}
+      propertyPath: liftCoefficient
+      value: 0.1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8569c83b923a8f345bba5de73a1021ed, type: 3}

@@ -43,9 +43,10 @@ public class MeshSampler
             for (int j = 0; j < sampleCount_distribution[i]; j++, c++)
             {
                 Vector3 sample_pos = bounds_stratified[j % bounds_stratified.Length].RandomPoint(straightness);
-                SampleCorrection(ref sample_pos, collider, c);
+                Vector3 sample_normal = Vector3.zero;
+                SampleCorrection(ref sample_pos, ref sample_normal, collider, c);
 
-                SamplePoint sample = new SamplePoint(sample_pos - linkedTransforms[i].position, linkedTransforms[i].rotation, linkedTransforms[i]);
+                SamplePoint sample = new SamplePoint(sample_pos - linkedTransforms[i].position, linkedTransforms[i].rotation, linkedTransforms[i], sample_normal);
                 MeshApproximation.Samples[c] = sample;
             }
         }
@@ -56,13 +57,21 @@ public class MeshSampler
     /// <summary>
     /// Corrects the sample to be placed on the surface of the mesh, if the sample exists outside of the mesh
     /// </summary>
-    private void SampleCorrection(ref Vector3 sample_pos, Collider collider, int sampleIndex)
+    private void SampleCorrection(ref Vector3 sample_pos, ref Vector3 sample_normal, Collider collider, int sampleIndex)
     {
         if (collider)
         {
             Vector3 correctedPos = collider.ClosestPoint(sample_pos);
-            if (Vector3.SqrMagnitude(sample_pos - correctedPos) > 0.001f) OnHullIndices.Add(sampleIndex);   //If this particle is on the hull => add a reference to the index
+            if (Vector3.SqrMagnitude(sample_pos - correctedPos) > 0.001f)
+            {
+                OnHullIndices.Add(sampleIndex);   //If this particle is on the hull => add a reference to the index
 
+                RaycastHit hit;
+                if (Physics.Raycast(sample_pos, (correctedPos - sample_pos).normalized, out hit))
+                {
+                    sample_normal = hit.normal.normalized;
+                }
+            }
             sample_pos = correctedPos;
         }
     }
@@ -143,6 +152,18 @@ public class MeshSampler
                 }
 
                 Gizmos.DrawSphere(MeshApproximation.Samples[i].GlobalPosition, Gizmos.probeSize);
+            }
+        }
+
+
+        /*Debug normals*/
+        if (DebugManager.Instance && DebugManager.Instance.DebugNormals)
+        {
+            Gizmos.color = Color.cyan;
+            for (int i = 0; i < MeshApproximation.SampleCount; i++)
+            {
+                Vector3 samplePos = MeshApproximation.Samples[i].GlobalPosition;
+                Gizmos.DrawLine(samplePos, samplePos + MeshApproximation.Samples[i].Normal * Gizmos.probeSize * 10);
             }
         }
 

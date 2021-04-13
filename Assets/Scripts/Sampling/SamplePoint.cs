@@ -2,11 +2,12 @@ using UnityEngine;
 
 public class SamplePoint
 {
-    public SamplePoint(Vector3 localPosition, Quaternion localRotation, Transform linkedTransform)
+    public SamplePoint(Vector3 localPosition, Quaternion localRotation, Transform linkedTransform, Vector3 normal)
     {
         this.localPosition = localPosition;
         this.localRotation = localRotation;
         this.linkedTransform = linkedTransform;
+        this.Normal = normal;
     }
 
     private Vector3 localPosition;
@@ -18,6 +19,12 @@ public class SamplePoint
     private Transform linkedTransform;
 
 
+
+    public Vector3 Normal { get; private set; }
+
+    private Quaternion lastRotation;
+
+
     /// <summary>
     /// Transforms the local positon of the sample to a global position, based on translation and rotation
     /// </summary>
@@ -27,4 +34,13 @@ public class SamplePoint
         Vector3 rotatedOffset = m.MultiplyPoint3x4(localPosition);
         this.GlobalPosition = linkedTransform.position + rotatedOffset;
     }
+
+    public void UpdateNormals()
+    {
+        Matrix4x4 m = Matrix4x4.Rotate(linkedTransform.rotation * Quaternion.Inverse(lastRotation));
+        Normal = m.MultiplyPoint3x4(Normal).normalized;
+
+        lastRotation = linkedTransform.rotation;
+    }
+
 }
