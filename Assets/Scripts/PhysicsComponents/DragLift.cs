@@ -122,19 +122,22 @@ public class DragLift
                 Vector3 deltaVelocity = deltaDistance / Time.deltaTime;
 
                 float velocitySquared = Vector3.SqrMagnitude(deltaVelocity);
-                float surfaceArea = totalSurfaceArea / ms.MeshApproximation.OnHullIndices.Length * 
-                    Mathf.Max(Vector3.Dot(deltaDistance.normalized, sp.Normal), 0.0f);
 
                 float density = (ms.MeshApproximation.IsUnderWater[ms.MeshApproximation.OnHullIndices[i]] == 1) ? 997.0f : 1.225f;      // Water drag  vs  air drag 
-
 
                 Vector3 dragDirection = -deltaDistance.normalized;
                 Vector3 T = (Vector3.Cross(deltaVelocity, -sp.Normal));
                 Vector3 liftDirection = Vector3.Cross(T, deltaVelocity).normalized;
 
 
-                float dragMagnitude = dragCoefficient * density * velocitySquared * 0.5f * surfaceArea;    //See formula reference in paper
-                float liftMagnitude = liftCoefficient * density * velocitySquared * 0.5f * surfaceArea;
+                float areaFraction = totalSurfaceArea / ms.MeshApproximation.OnHullIndices.Length;
+
+                float dragSurfaceArea = areaFraction * Mathf.Max(Vector3.Dot(deltaDistance.normalized, sp.Normal), 0.0f);
+                float liftSurfaceArea = Mathf.Sqrt(Mathf.Pow(areaFraction, 2.0f) - Mathf.Pow(dragSurfaceArea, 2.0f)) * Mathf.Max(Vector3.Dot(deltaDistance.normalized, sp.Normal), 0.0f);
+
+
+                float dragMagnitude = dragCoefficient * density * velocitySquared * 0.5f * dragSurfaceArea;    //See formula reference in paper
+                float liftMagnitude = liftCoefficient * density * velocitySquared * 0.5f * liftSurfaceArea;
 
                 float maxDragForce = rb.mass * deltaVelocity.magnitude / Time.deltaTime; //F_{max} = m*a_{particle}
                 dragMagnitude = Mathf.Clamp(dragMagnitude, 0.0f, maxDragForce);

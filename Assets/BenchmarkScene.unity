@@ -290,7 +290,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!81 &1945143840
 AudioListener:
   m_ObjectHideFlags: 0
@@ -437,7 +437,7 @@ MonoBehaviour:
   debugDrag: 1
   debugLift: 1
   debugOnHull: 0
-  debugNormals: 1
+  debugNormals: 0
   debugBounds: 0
 --- !u!1001 &7285314309635188151
 PrefabInstance:
@@ -553,7 +553,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7650029744765058087, guid: 8569c83b923a8f345bba5de73a1021ed, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7650029744765058088, guid: 8569c83b923a8f345bba5de73a1021ed, type: 3}
       propertyPath: liftCoefficient
