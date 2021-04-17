@@ -15,7 +15,9 @@ public class TestCase : ScriptableObject
     public int[] sampleCounts = new int[] { 10, 20, 40, 80, 160, 320, 640, 1280, 2560, 5120, 10240, 20480 };
 
     public float density = 700.0f;
-    public float viscosity = 1.0f;
+
+    public float coefficientOfDrag = 1.0f;
+    public float coefficientOfLift = 1.0f;
 
     public float amplitude = 0.0f;
     public float ordinaryFrequency = 1.5f;

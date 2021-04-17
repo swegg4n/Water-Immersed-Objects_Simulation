@@ -132,15 +132,14 @@ public class DragLift
 
                 float areaFraction = totalSurfaceArea / ms.MeshApproximation.OnHullIndices.Length;
 
-                float dragSurfaceArea = areaFraction * Mathf.Max(Vector3.Dot(deltaDistance.normalized, sp.Normal), 0.0f);
-                float liftSurfaceArea = Mathf.Sqrt(Mathf.Pow(areaFraction, 2.0f) - Mathf.Pow(dragSurfaceArea, 2.0f)) * Mathf.Max(Vector3.Dot(deltaDistance.normalized, sp.Normal), 0.0f);
-
+                float dragSurfaceArea = areaFraction * Mathf.Max(Vector3.Dot(deltaDistance.normalized, sp.Normal), 0);
+                float liftSurfaceArea = Mathf.Sqrt(Mathf.Pow(areaFraction, 2.0f) - Mathf.Pow(dragSurfaceArea, 2.0f)) * Mathf.Max(Vector3.Dot(deltaDistance.normalized, sp.Normal), 0.0f);        
 
                 float dragMagnitude = dragCoefficient * density * velocitySquared * 0.5f * dragSurfaceArea;    //See formula reference in paper
                 float liftMagnitude = liftCoefficient * density * velocitySquared * 0.5f * liftSurfaceArea;
 
                 float maxDragForce = rb.mass * deltaVelocity.magnitude / Time.deltaTime; //F_{max} = m*a_{particle}
-                dragMagnitude = Mathf.Clamp(dragMagnitude, 0.0f, maxDragForce);
+                dragMagnitude = Mathf.Min(dragMagnitude, maxDragForce);
 
 
                 Vector3 dragForce = dragMagnitude * dragDirection;

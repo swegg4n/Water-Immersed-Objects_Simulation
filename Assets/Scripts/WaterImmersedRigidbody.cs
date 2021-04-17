@@ -92,11 +92,12 @@ public class WaterImmersedRigidbody : MonoBehaviour
     /// <summary>
     /// Sets the properties of this object and initializes it. (Used in benchmarking)
     /// </summary>
-    public void Set(int sampleCount, float density, float viscosity)
+    public void Set(int sampleCount, float density, float dragCoefficient, float liftCoefficient)
     {
         this.sampleCount = sampleCount;
         this.density = density;
-        this.dragCoefficient = viscosity;
+        this.dragCoefficient = dragCoefficient;
+        this.liftCoefficient = liftCoefficient;
 
         Initialize();
     }

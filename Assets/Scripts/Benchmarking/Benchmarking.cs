@@ -89,7 +89,7 @@ public class Benchmarking : MonoBehaviour
 
         WaveManager.instance.Set(testCase.amplitude, testCase.ordinaryFrequency, testCase.angluarFrequency);
         GameObject referenceInstance = Instantiate(testCase.prefab, testCase.position, Quaternion.identity);
-        referenceInstance.GetComponent<WaterImmersedRigidbody>().Set(REFERENCE_BOAT_SAMPLES, testCase.density, testCase.viscosity);
+        referenceInstance.GetComponent<WaterImmersedRigidbody>().Set(REFERENCE_BOAT_SAMPLES, testCase.density, testCase.coefficientOfDrag, testCase.coefficientOfLift);
 
         Mesh[] meshes = referenceInstance.GetComponent<WaterImmersedRigidbody>().meshes;
         Transform[] transforms = referenceInstance.GetComponent<WaterImmersedRigidbody>().transforms;
@@ -120,7 +120,8 @@ public class Benchmarking : MonoBehaviour
     {
         /*Instantiate a new boat to test with*/
         GameObject boatInstance = Instantiate(testCase.prefab, testCase.position, Quaternion.identity);
-        boatInstance.GetComponent<WaterImmersedRigidbody>().Set(sampleCount, testCase.density, testCase.viscosity);
+        boatInstance.GetComponent<WaterImmersedRigidbody>().Set(sampleCount, testCase.density, testCase.coefficientOfDrag, testCase.coefficientOfLift);
+        boatInstance.SetActive(true);
 
 
         yield return new WaitForSeconds(Time.deltaTime);    //Delay to not have instantiation manipulate test results. (instantiate is computationally heavy)

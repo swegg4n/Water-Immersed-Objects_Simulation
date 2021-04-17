@@ -16,7 +16,9 @@ public class TestResult
         this.prefabName = testCase.prefab.name;
 
         this.density = testCase.density;
-        this.viscosity = testCase.viscosity;
+
+        this.coefficientOfDrag = testCase.coefficientOfDrag;
+        this.coefficientOfLift = testCase.coefficientOfLift;
 
         this.amplitude = testCase.amplitude;
         this.ordinaryFrequency = testCase.ordinaryFrequency;
@@ -32,9 +34,10 @@ public class TestResult
     public string testType;
     public string prefabName;
 
-    public int stratifiedDivisions;
     public float density;
-    public float viscosity;
+
+    public float coefficientOfDrag;
+    public float coefficientOfLift;
 
     public float amplitude;
     public float ordinaryFrequency;
@@ -71,7 +74,9 @@ public class TestResult
                 "CPU: " + SystemInfo.processorType + " (" + SystemInfo.processorFrequency + ")",
                 "",
                 "Prefab name:  " + prefabName,
-                "Stratified divisions:  " + stratifiedDivisions,
+                "",
+                "Coefficient of drag:  " + coefficientOfDrag,
+                "Coefficient of lift:  " + coefficientOfLift,
                 "",
                 "Amplitude:  " + amplitude,
                 "Ordinary frequency  " + ordinaryFrequency,

@@ -111,7 +111,7 @@ MonoBehaviour:
   sampleCount: 1000
   density: 600
   dragCoefficient: 1
-  liftCoefficient: 1
+  liftCoefficient: 0.1
   straightness: 0
   meshes: []
   transforms: []
@@ -122,12 +122,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7650029744765058087}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2b2adeacf3f6b1b49bcfa4b08eda4f0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
+  speed: 0
 --- !u!64 &7650029744906991913
 MeshCollider:
   m_ObjectHideFlags: 0
