@@ -123,7 +123,7 @@ public class DragLift
 
                 float velocitySquared = Vector3.SqrMagnitude(deltaVelocity);
 
-                float density = (ms.MeshApproximation.IsUnderWater[ms.MeshApproximation.OnHullIndices[i]] == 1) ? 997.0f : 1.225f;      // Water drag  vs  air drag 
+                float density = (ms.MeshApproximation.IsUnderWater[ms.MeshApproximation.OnHullIndices[i]] == 1) ? WaterImmersedRigidbody.FluidDensity : 1.225f;      // Water drag  vs  air drag 
 
                 Vector3 dragDirection = -deltaDistance.normalized;
                 Vector3 T = (Vector3.Cross(deltaVelocity, -sp.Normal));
