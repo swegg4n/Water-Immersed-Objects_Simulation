@@ -38,7 +38,7 @@ public class Buoyancy
         /*Debug submerged samples*/
         if (DebugManager.Instance && DebugManager.Instance.DebugUnderWaterSamples)
         {
-            Gizmos.color = Color.blue;
+            Gizmos.color = Color.white;
             for (int i = 0; i < ms.MeshApproximation.SampleCount; i++)
             {
                 if (ms.MeshApproximation.IsUnderWater[i] == 1)

@@ -123,6 +123,11 @@ public class DragLift
 
                 float velocitySquared = Vector3.SqrMagnitude(deltaVelocity);
 
+                if (i == 0)
+                {
+                    Debug.Log($"Velocity:  {deltaVelocity.z}");
+                }
+
                 float density = (ms.MeshApproximation.IsUnderWater[ms.MeshApproximation.OnHullIndices[i]] == 1) ? WaterImmersedRigidbody.FluidDensity : 1.225f;      // Water drag  vs  air drag 
 
                 Vector3 dragDirection = -deltaDistance.normalized;
@@ -133,7 +138,7 @@ public class DragLift
                 float areaFraction = totalSurfaceArea / ms.MeshApproximation.OnHullIndices.Length;
 
                 float dragSurfaceArea = areaFraction * Mathf.Max(Vector3.Dot(deltaDistance.normalized, sp.Normal), 0);
-                float liftSurfaceArea = Mathf.Sqrt(Mathf.Pow(areaFraction, 2.0f) - Mathf.Pow(dragSurfaceArea, 2.0f)) * Mathf.Max(Vector3.Dot(deltaDistance.normalized, sp.Normal), 0.0f);        
+                float liftSurfaceArea = Mathf.Sqrt(Mathf.Pow(areaFraction, 2.0f) - Mathf.Pow(dragSurfaceArea, 2.0f)) * Mathf.Max(Vector3.Dot(deltaDistance.normalized, sp.Normal), 0.0f);
 
                 float dragMagnitude = dragCoefficient * density * velocitySquared * 0.5f * dragSurfaceArea;    //See formula reference in paper
                 float liftMagnitude = liftCoefficient * density * velocitySquared * 0.5f * liftSurfaceArea;
