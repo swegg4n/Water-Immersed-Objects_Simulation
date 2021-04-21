@@ -1139,11 +1139,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c19706245df78b41bb925d9cdbf8768, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sampleCount: 27
+  sampleCount: 10
   density: 500
   dragCoefficient: 0.4
   liftCoefficient: 1
-  straightness: 1
+  straightness: 0
   meshes: []
   transforms: []
 --- !u!54 &572187304
@@ -2093,13 +2093,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1789798539}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.12, y: 1.31, z: -4.63}
+  m_LocalRotation: {x: 0.17500712, y: -0, z: -0, w: 0.9845672}
+  m_LocalPosition: {x: 0.12000003, y: 2, z: -3.27}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 572187308}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 20.158, y: 0, z: 0}
 --- !u!114 &1789798541
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2216,8 +2216,8 @@ Camera:
   m_GameObject: {fileID: 1789798539}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0, g: 1, b: 0, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 1, g: 1, b: 1, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -2518,10 +2518,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   debugAirSamples: 0
   debugUnderWaterSamples: 0
-  debugDrag: 1
-  debugLift: 1
+  debugDrag: 0
+  debugLift: 0
   debugOnHull: 0
-  debugNormals: 0
+  debugNormals: 1
   debugBounds: 0
 --- !u!1001 &2118721338
 PrefabInstance:
@@ -2641,7 +2641,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7627913673178952005, guid: 9251f69c73f463c4a98ad06ac5ebc404, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8276269636241232016, guid: 9251f69c73f463c4a98ad06ac5ebc404, type: 3}
       propertyPath: m_Enabled
