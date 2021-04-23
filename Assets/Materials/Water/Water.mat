@@ -102,9 +102,9 @@ Material:
     - Vector1_63210587ea4c4559bfe64af3de7d84b0: 70
     - Vector1_65376ea1416e47a1aedd59c18cadb779: 10
     - Vector1_b4cd9211f86c4e73a7eebc941717af94: 0.17
-    - Vector1_e635eba33687462eb192c7cf4838de1a: 0.096
+    - Vector1_e635eba33687462eb192c7cf4838de1a: 0.22
     - _AlphaClip: 0
-    - _Amplitude: 0
+    - _Amplitude: 2
     - _AngularFrequency: 1
     - _Blend: 0
     - _BumpScale: 1
@@ -121,7 +121,7 @@ Material:
     - _GlossyReflections: 0
     - _Metallic: 0
     - _OcclusionStrength: 1
-    - _OrdinaryFrequency: 1.5
+    - _OrdinaryFrequency: 10
     - _Parallax: 0.005
     - _QueueOffset: 0
     - _ReceiveShadows: 1
@@ -133,8 +133,8 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 0
     m_Colors:
-    - Color_299f1b742a65431eade9446cc887e45d: {r: 0.062745094, g: 0.4290869, b: 1, a: 0.77254903}
-    - Color_ffc7734b85c8432e98d2cadffabf5db3: {r: 0, g: 0.48795938, b: 1, a: 0.83137256}
+    - Color_299f1b742a65431eade9446cc887e45d: {r: 0.062745094, g: 0.4290869, b: 1, a: 0.75686276}
+    - Color_ffc7734b85c8432e98d2cadffabf5db3: {r: 0, g: 0.48795938, b: 1, a: 0.84313726}
     - _BaseColor: {r: 0.009211446, g: 0.36276692, b: 0.6509434, a: 0.4627451}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
