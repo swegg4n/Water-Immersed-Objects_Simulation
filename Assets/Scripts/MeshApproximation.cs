@@ -43,9 +43,15 @@ public class MeshApproximation
 
     private void UpdateUnderWaterSamples()
     {
-        for (int i = 0; i < SampleCount; i++)
+        try
         {
-            IsUnderWater[i] = (Samples[i].GlobalPosition.y <= WaveManager.instance.GetWaveHeight(Samples[i].GlobalPosition)) ? (byte)1 : (byte)0;
+            for (int i = 0; i < SampleCount; i++)
+            {
+                IsUnderWater[i] = (Samples[i].GlobalPosition.y <= WaveManager.instance.GetWaveHeight(Samples[i].GlobalPosition)) ? (byte)1 : (byte)0;
+            }
+        }
+        catch (System.Exception)
+        {
         }
     }
 

@@ -26,7 +26,10 @@ public class WaterImmersedRigidbody : MonoBehaviour
 
     private void Awake()
     {
-        Initialize();   //OBS! THIS SHOULD NOT BE CALLED WHEN BENCHMARKING
+        if (!GameObject.Find("GameManager").GetComponent<Benchmarking>())
+        {
+            Initialize();
+        }
     }
 
 
@@ -35,6 +38,9 @@ public class WaterImmersedRigidbody : MonoBehaviour
     /// </summary>
     public void Initialize()
     {
+        Quaternion rotation = transform.rotation;
+        transform.rotation = Quaternion.Euler(0, 0, 0);
+
         List<Mesh> meshList = new List<Mesh>();
         List<Transform> transformList = new List<Transform>();
 
@@ -66,9 +72,9 @@ public class WaterImmersedRigidbody : MonoBehaviour
             meshVolumes[i] = MeshVolume.VolumeOfMesh(meshes[i], transforms[i]);
             surfaceAreas[i] = MeshSurfaceArea.SurfaceAreaOfMesh(meshes[i], transforms[i]);
             boudingBoxes[i] = new BoundingBox(meshes[i].bounds.center,
-                new Vector3(meshes[i].bounds.size.x * transform.localScale.x,
-                            meshes[i].bounds.size.y * transform.localScale.y,
-                            meshes[i].bounds.size.z * transform.localScale.z)
+                new Vector3(meshes[i].bounds.size.x * transform.localScale.x * transforms[i].localScale.x,
+                            meshes[i].bounds.size.y * transform.localScale.y * transforms[i].localScale.y,
+                            meshes[i].bounds.size.z * transform.localScale.z * transforms[i].localScale.z)
                 * 1.5f, transforms[i]);
         }
 
@@ -87,6 +93,8 @@ public class WaterImmersedRigidbody : MonoBehaviour
         buoyancy = new Buoyancy(rb, meshSampler, totalMeshVolume);
         waterDrag = new DragLift(rb, meshSampler, dragCoefficient, liftCoefficient, meshes, transforms, transform, totalSurfaceArea);
 
+
+        transform.rotation = rotation;
         rb.isKinematic = false;
     }
 

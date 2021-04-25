@@ -2,7 +2,8 @@ using UnityEngine;
 
 public class Motor : MonoBehaviour
 {
-    [SerializeField] private float speed = 1.0f;
+    [SerializeField] private float force = 1.0f;
+    [SerializeField] private bool impulse = false;
     private Rigidbody rb;
 
 
@@ -11,8 +12,13 @@ public class Motor : MonoBehaviour
         rb = GetComponentInParent<Rigidbody>();
     }
 
+    bool first = true;
     private void FixedUpdate()
     {
-        rb.AddForceAtPosition(speed * transform.forward, transform.position, ForceMode.Acceleration);
+        if (first || impulse == false)
+        {
+            rb.AddForceAtPosition(force * transform.forward, transform.position, ForceMode.Acceleration);
+            first = false;
+        }
     }
 }
