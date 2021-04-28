@@ -1,0 +1,27 @@
+Test length:  1000
+Type of test:  Correctness
+CPU: Intel(R) Core(TM) i5-4670K CPU @ 3.40GHz (3398)
+
+Prefab name:  Basic
+
+Coefficient of drag:  1
+Coefficient of lift:  1
+
+Amplitude:  0
+Ordinary frequency  1,5
+Angular frequency  1
+
+
+SampleCount 	 Mean square vertices error
+10 	 26,99224
+20 	 28,09741
+40 	 27,46838
+80 	 27,46772
+160 	 27,58857
+320 	 27,58917
+640 	 27,51308
+1280 	 27,42788
+2560 	 26,68159
+5120 	 25,28698
+10240 	 15,31712
+20480 	 0,266308

@@ -10,11 +10,6 @@ public class WaveManager : MonoBehaviour
     [SerializeField] private float angluarFrequency = 1.0f;
     private float phase = 0.0f;
 
-    [SerializeField] private bool visual = false;
-    private MeshFilter meshFilter;
-
-    [SerializeField] private bool debug = false;
-
 
     private void Awake()
     {
@@ -26,8 +21,6 @@ public class WaveManager : MonoBehaviour
         {
             Destroy(this);
         }
-
-        meshFilter = GetComponent<MeshFilter>();
     }
 
     public void Set(float amplitude, float ordinaryFrequency, float angluarFrequency)
@@ -42,36 +35,12 @@ public class WaveManager : MonoBehaviour
     private void Update()
     {
         phase += angluarFrequency * Time.deltaTime;
-
-        if (visual)
-        {
-            Vector3[] verts = meshFilter.sharedMesh.vertices;
-            for (int i = 0; i < verts.Length; i++)
-            {
-                verts[i].y = GetWaveHeight(verts[i]);
-            }
-            meshFilter.sharedMesh.vertices = verts;
-        }
     }
 
 
     public float GetWaveHeight(Vector3 point)
     {
         return amplitude * Mathf.Sin(point.x / ordinaryFrequency + phase);
-    }
-
-
-    public void OnDrawGizmos()
-    {
-        if (debug && meshFilter)
-        {
-            Vector3[] verts = meshFilter.sharedMesh.vertices;
-            for (int i = 0; i < verts.Length; i++)
-            {
-                verts[i].y = GetWaveHeight(verts[i]);
-                Gizmos.DrawWireSphere(verts[i], Gizmos.probeSize * 10);
-            }
-        }
     }
 
 }

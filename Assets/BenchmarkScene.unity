@@ -357,12 +357,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   testCases:
-  - {fileID: 11400000, guid: 119d0122a172af549996643b29683801, type: 2}
-  - {fileID: 11400000, guid: 70e1c6679dc815149965d39fa794a28b, type: 2}
-  - {fileID: 11400000, guid: dea94b3ca441cf94a9871f156b7910ac, type: 2}
-  - {fileID: 11400000, guid: 234e304aa7ae99a469ed8a9327d021b8, type: 2}
-  - {fileID: 11400000, guid: aadf8520637826e4b8bc8e3c524611df, type: 2}
-  - {fileID: 11400000, guid: d3e6ee65f0f3f7c47855b8d4d5dcc5cf, type: 2}
+  - {fileID: 11400000, guid: 793f19d5b253a1e4782d66f0beca3972, type: 2}
+  - {fileID: 11400000, guid: d7503d7bdffa86745b8f6b00df81fcab, type: 2}
+  - {fileID: 11400000, guid: 2b5e726f4e8c79b43a4c92d19dd714bb, type: 2}
+  - {fileID: 11400000, guid: bf534dc8d543fed499b9f7a0a366872e, type: 2}
+  - {fileID: 11400000, guid: cf0e13932169fce40b8cb56b2f7bfdc3, type: 2}
+  - {fileID: 11400000, guid: 0d75f9415b9ac7649a6820c8f9412577, type: 2}
 --- !u!114 &2112398941
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -441,5 +441,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: OceanPlane
       objectReference: {fileID: 0}
+    - target: {fileID: 8276269636241232016, guid: 9251f69c73f463c4a98ad06ac5ebc404, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 51e71b58bf16e1d4294c03220da5b17a, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9251f69c73f463c4a98ad06ac5ebc404, type: 3}

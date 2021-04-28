@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9489fe399c0363744abf43084c6f6fa9, type: 3}
+  m_Name: 2-2_C
+  m_EditorClassIdentifier: 
+  testLength: 1000
+  typeOfTest: 1
+  prefab: {fileID: 8101059835589951873, guid: a5d580ae820f9b84096c609bf733a645, type: 3}
+  position: {x: 0, y: 0, z: 0}
+  sampleCounts: 0a000000140000002800000050000000a0000000400100008002000000050000000a0000001400000028000000500000
+  density: 600
+  coefficientOfDrag: 1
+  coefficientOfLift: 1
+  amplitude: 0
+  ordinaryFrequency: 1.5
+  angluarFrequency: 1

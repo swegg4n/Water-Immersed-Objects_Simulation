@@ -1,0 +1,27 @@
+Test length:  1000
+Type of test:  Performance
+CPU: Intel(R) Core(TM) i5-4670K CPU @ 3.40GHz (3398)
+
+Prefab name:  Barrel
+
+Coefficient of drag:  1
+Coefficient of lift:  1
+
+Amplitude:  0
+Ordinary frequency  1,5
+Angular frequency  1
+
+
+SampleCount 	 Avg. FPS 	 Avg. Memory usage (bytes)
+10 	 1374,761 	 15339245
+20 	 2084,87 	 15215217
+40 	 1889,141 	 15302759
+80 	 1743,561 	 15299943
+160 	 1990,729 	 15230991
+320 	 2006,255 	 15344601
+640 	 1835,52 	 15423155
+1280 	 1881,999 	 15454025
+2560 	 1214,801 	 15807593
+5120 	 703,2147 	 16521374
+10240 	 79,03739 	 19287198
+20480 	 3,017976 	 23884756

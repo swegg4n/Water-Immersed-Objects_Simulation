@@ -1,0 +1,27 @@
+Test length:  1000
+Type of test:  Performance
+CPU: Intel(R) Core(TM) i5-4670K CPU @ 3.40GHz (3398)
+
+Prefab name:  SailBoat_2
+
+Coefficient of drag:  1
+Coefficient of lift:  1
+
+Amplitude:  0
+Ordinary frequency  1,5
+Angular frequency  1
+
+
+SampleCount 	 Avg. FPS 	 Avg. Memory usage (bytes)
+10 	 1569,141 	 27843269
+20 	 1650,798 	 27599110
+40 	 1627,207 	 29567883
+80 	 1634,371 	 28840450
+160 	 1625,1 	 27812781
+320 	 1626,023 	 27784888
+640 	 1616,178 	 27951687
+1280 	 1553,885 	 28148840
+2560 	 1624,497 	 28190246
+5120 	 1492,078 	 29199315
+10240 	 68,01543 	 32183517
+20480 	 3,021369 	 31771944
