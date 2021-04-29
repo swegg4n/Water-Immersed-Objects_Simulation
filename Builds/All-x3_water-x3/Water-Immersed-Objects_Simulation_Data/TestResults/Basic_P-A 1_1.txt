@@ -1,0 +1,27 @@
+Test length:  1000
+Type of test:  Performance
+CPU: Intel(R) Core(TM) i5-4670K CPU @ 3.40GHz (3398)
+
+Prefab name:  Basic
+
+Coefficient of drag:  1
+Coefficient of lift:  1
+
+Amplitude:  1
+Ordinary frequency  10
+Angular frequency  1
+
+
+SampleCount 	 Avg. FPS 	 Avg. Memory usage (bytes)
+10 	 1216,46 	 4041765
+20 	 1219,69 	 4048914
+40 	 1227,654 	 4224037
+80 	 1225,817 	 4322647
+160 	 1228,737 	 4380946
+320 	 1206,851 	 4232153
+640 	 1208,061 	 4057512
+1280 	 1189,184 	 4343571
+2560 	 1154,435 	 4678441
+5120 	 868,5977 	 5538224
+10240 	 81,023 	 6596710
+20480 	 3,035446 	 8146239

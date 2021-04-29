@@ -105,7 +105,7 @@ Material:
     - Vector1_e635eba33687462eb192c7cf4838de1a: 0.22
     - _AlphaClip: 0
     - _Amplitude: 0
-    - _AngularFrequency: 0
+    - _AngularFrequency: 1
     - _Blend: 0
     - _BumpScale: 1
     - _ClearCoatMask: 0

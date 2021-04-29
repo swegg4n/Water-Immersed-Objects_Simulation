@@ -227,6 +227,7 @@ GameObject:
   - component: {fileID: 1945143842}
   - component: {fileID: 1945143841}
   - component: {fileID: 1945143840}
+  - component: {fileID: 1945143843}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -299,6 +300,38 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 10, y: 0, z: 0}
+--- !u!114 &1945143843
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1945143839}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_RenderPostProcessing: 0
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_AllowXRRendering: 1
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_Version: 2
 --- !u!1 &2112398937
 GameObject:
   m_ObjectHideFlags: 0
@@ -357,12 +390,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   testCases:
-  - {fileID: 11400000, guid: 793f19d5b253a1e4782d66f0beca3972, type: 2}
-  - {fileID: 11400000, guid: d7503d7bdffa86745b8f6b00df81fcab, type: 2}
-  - {fileID: 11400000, guid: 2b5e726f4e8c79b43a4c92d19dd714bb, type: 2}
-  - {fileID: 11400000, guid: bf534dc8d543fed499b9f7a0a366872e, type: 2}
-  - {fileID: 11400000, guid: cf0e13932169fce40b8cb56b2f7bfdc3, type: 2}
-  - {fileID: 11400000, guid: 0d75f9415b9ac7649a6820c8f9412577, type: 2}
+  - {fileID: 11400000, guid: 2a4a6e3870a68d04fadb1dffe1da3de5, type: 2}
+  - {fileID: 11400000, guid: af77e9ffdeea18043a0af84814e84306, type: 2}
+  - {fileID: 11400000, guid: d510e8011e386ea47a57b575ab86a46b, type: 2}
+  - {fileID: 11400000, guid: d4c6ee9ba264a6b4cb82b6e3f3b1dda4, type: 2}
+  - {fileID: 11400000, guid: bfea5d9fdb77b58418e81e1e811dd118, type: 2}
+  - {fileID: 11400000, guid: 5d374f2f454e11c41b11cce1cf3b9c08, type: 2}
+  - {fileID: 11400000, guid: 6fbc3f6e970f56d4c8ac888dde0147ac, type: 2}
+  - {fileID: 11400000, guid: 46e3eebb4af519744a9a117d214d951a, type: 2}
+  - {fileID: 11400000, guid: 525760f8a7bbe8941a043e943ebd59b0, type: 2}
+  - {fileID: 11400000, guid: 83026f29ddd6a554682e4dc93b9a4acc, type: 2}
+  - {fileID: 11400000, guid: 881a734f0e02b1c4daa46836ffc86acf, type: 2}
+  - {fileID: 11400000, guid: ae096189445af8240a0a9489603b817d, type: 2}
+  - {fileID: 11400000, guid: 94f4da95ebfb21f45b2c61760589936a, type: 2}
+  - {fileID: 11400000, guid: b87575686dadeab40a8d2075f21ab39c, type: 2}
+  - {fileID: 11400000, guid: 8b99bfaa2cf58eb498a6f21a55642757, type: 2}
+  - {fileID: 11400000, guid: f9ae25fdbc627e64f8cfcfd7ffcfca36, type: 2}
+  - {fileID: 11400000, guid: a28011aa9eb51ce4b959305e445b8bfd, type: 2}
+  - {fileID: 11400000, guid: 296715c0a2976be40b251725e343f4f4, type: 2}
 --- !u!114 &2112398941
 MonoBehaviour:
   m_ObjectHideFlags: 0

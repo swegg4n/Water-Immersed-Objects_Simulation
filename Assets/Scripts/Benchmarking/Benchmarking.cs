@@ -8,8 +8,8 @@ public class Benchmarking : MonoBehaviour
 
     private const int REFERENCE_BOAT_SAMPLES = 20480;
 
+    //[SerializeField] private TestCase[] testCases;
     [SerializeField] private TestCase[] testCases;
-
 
     private bool testComplete = true;
 
@@ -21,9 +21,9 @@ public class Benchmarking : MonoBehaviour
 
     private void Awake()
     {
-        benchmarkPath = Path.Combine(Application.dataPath, "TestResults");
+        benchmarkPath = Application.dataPath + "/TestResults/";
 #if !UNITY_EDITOR       //Creates the Test_Results folder for builds
-        if (!Directory.Exists(benchmarkPath))   
+        if (!Directory.Exists(benchmarkPath))
             Directory.CreateDirectory(benchmarkPath);
 #endif
     }
@@ -43,35 +43,43 @@ public class Benchmarking : MonoBehaviour
             yield break;
         }
 
-        for (int i = 0; i < testCases.Length; i++)
+        int numTests = testCases.Length * 3;
+        int c = 0;
+        for (int a = 0; a < 3; a++)
         {
-            string testName = testCases[i].name;
-            string filePath = Path.Combine(benchmarkPath, testName + ".txt");
-
-            TestResult testResult = new TestResult(testCases[i]);
-
-            using (StreamWriter writer = new StreamWriter(filePath))
+            for (int i = 0; i < testCases.Length; i++, c++)
             {
-                for (int j = 0; j < testResult.Header().Count; j++)
+                string filePath = benchmarkPath + testCases[i].name + "_" + a + ".txt";
+
+                TestResult testResult = new TestResult(testCases[i]);
+
+                using (StreamWriter writer = new StreamWriter(filePath))
                 {
-                    writer.WriteLine(testResult.Header()[j]);
+                    for (int j = 0; j < testResult.Header().Count; j++)
+                    {
+                        writer.WriteLine(testResult.Header()[j]);
+                    }
                 }
-            }
 
-            if (testCases[i].typeOfTest == TypeOfTest.Correctness)
-            {
-                testComplete = false;
-                StartCoroutine(GenerateReferenceData(testCases[i]));
-            }
+                if (testCases[i].typeOfTest == TypeOfTest.Correctness)
+                {
+                    testComplete = false;
+                    StartCoroutine(GenerateReferenceData(testCases[i]));
+                }
 
-            for (int j = 0; j < testCases[i].sampleCounts.Length; j++)
-            {
+                for (int j = 0; j < testCases[i].sampleCounts.Length; j++)
+                {
+                    while (testComplete == false) yield return new WaitForSecondsRealtime(1.0f);    //Spin wait
+
+                    StartCoroutine(RunBenchmark(testCases[i], testCases[i].sampleCounts[j], testResult, filePath));
+                    testComplete = false;
+                }
                 while (testComplete == false) yield return new WaitForSecondsRealtime(1.0f);    //Spin wait
 
-                StartCoroutine(RunBenchmark(testCases[i], testCases[i].sampleCounts[j], testResult, filePath));
-                testComplete = false;
+                Debug.Log("Waiting 10 seconds for next test...");
+                Debug.Log($"Total progress: {c + 1}/{numTests} tests completed");
+                yield return new WaitForSecondsRealtime(10.0f);
             }
-            while (testComplete == false) yield return new WaitForSecondsRealtime(1.0f);    //Spin wait
         }
 
         Debug.Log("End of test, closing...");
@@ -79,7 +87,7 @@ public class Benchmarking : MonoBehaviour
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #else
-                Application.Quit();
+        Application.Quit();
 #endif
     }
 
@@ -99,11 +107,13 @@ public class Benchmarking : MonoBehaviour
         int framesCounter = 0;
         while (framesCounter < testCase.testLength)
         {
+            Time.timeScale = 0.0f;
+
             if (framesCounter % 10 == 0)
                 Debug.Log($"Progress:  {(framesCounter * 100) / testCase.testLength}%");  //DEBUG progress
 
-            Time.timeScale = 0.0f;
             referenceVertices[framesCounter] = BenchmarkHelper.MeshArrayToVerticesArray(meshes, transforms);
+
             Time.timeScale = 1.0f;
 
             yield return new WaitForSecondsRealtime(Time.deltaTime);   // Wait for next frame
