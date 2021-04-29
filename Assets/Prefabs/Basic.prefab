@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 576729464}
   - component: {fileID: 576729463}
   - component: {fileID: 576729465}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Main Camera (1)
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -114,7 +114,7 @@ GameObject:
   - component: {fileID: 8984073424922688734}
   - component: {fileID: 919132148365596920}
   - component: {fileID: 1336347610}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Basic
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -246,4 +246,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b2adeacf3f6b1b49bcfa4b08eda4f0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0
+  force: 1
+  impulse: 0

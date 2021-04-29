@@ -50,7 +50,7 @@ public class TestResult
 
 
 
-    public void SaveFrame(int frame, Mesh[] meshes = null, Transform[] transforms = null)
+    public void SaveFrame(int frame, Mesh[] meshes = null, Transform[] transforms = null, Mesh[] ref_meshes = null, Transform[] ref_transforms = null)
     {
         switch (typeOfTest)
         {
@@ -59,7 +59,9 @@ public class TestResult
                 this.memoryUsage[frame] = BenchmarkHelper.GetMemoryUsage();
                 break;
             case TypeOfTest.Correctness:
-                this.verticesSqrError[frame] = BenchmarkHelper.VerticesSqrError(BenchmarkHelper.MeshArrayToVerticesArray(meshes, transforms), Benchmarking.referenceVertices[frame]);
+                this.verticesSqrError[frame] = BenchmarkHelper.VerticesSqrError(
+                    BenchmarkHelper.MeshArrayToVerticesArray(meshes, transforms), 
+                    BenchmarkHelper.MeshArrayToVerticesArray(ref_meshes, ref_transforms));
                 break;
         }
     }
