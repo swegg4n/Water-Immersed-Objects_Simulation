@@ -40,7 +40,7 @@ public class Benchmarking : MonoBehaviour
 
         stopwatch.Restart();
 
-        int numTests = testCases.Length * 3;
+        int numTests = testCases.Length * 2;
         int c = 0;
         for (int a = 0; a < 2; a++)
         {
@@ -158,7 +158,7 @@ public class Benchmarking : MonoBehaviour
 
                     case TypeOfTest.Correctness:
                         testResult.SaveFrame(framesCounter, boatInstance.GetComponent<WaterImmersedRigidbody>().meshes, boatInstance.GetComponent<WaterImmersedRigidbody>().transforms,
-                                                           referenceInstance.GetComponent<WaterImmersedRigidbody>().meshes, boatInstance.GetComponent<WaterImmersedRigidbody>().transforms);
+                                                           referenceInstance.GetComponent<WaterImmersedRigidbody>().meshes, referenceInstance.GetComponent<WaterImmersedRigidbody>().transforms);
                         break;
                 }
 

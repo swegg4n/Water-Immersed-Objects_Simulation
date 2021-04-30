@@ -1,0 +1,27 @@
+Test length:  100
+Type of test:  Correctness
+CPU: Intel(R) Core(TM) i5-4670K CPU @ 3.40GHz (3398)
+
+Prefab name:  Barrel
+
+Coefficient of drag:  1
+Coefficient of lift:  1
+
+Amplitude:  0
+Ordinary frequency  10
+Angular frequency  1
+
+
+SampleCount 	 Mean square vertices error
+10 	 4,577801
+20 	 3,002709
+40 	 5,185031
+80 	 0,6857434
+160 	 0,3420824
+320 	 0,4178365
+640 	 0,05628848
+1280 	 0,1697598
+2560 	 0,04983693
+5120 	 0,04627742
+10240 	 0,02913425
+20480 	 0,01185325
