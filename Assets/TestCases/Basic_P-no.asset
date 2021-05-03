@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9489fe399c0363744abf43084c6f6fa9, type: 3}
   m_Name: Basic_P-no
   m_EditorClassIdentifier: 
-  testLength: 100
+  testLength: 1000
   typeOfTest: 0
   prefab: {fileID: 8101059835589951873, guid: a5d580ae820f9b84096c609bf733a645, type: 3}
   position: {x: 0, y: 0, z: 0}
