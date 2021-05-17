@@ -1,0 +1,15 @@
+Test length:  1000
+Type of test:  Performance
+CPU: Intel(R) Core(TM) i5-4300U CPU @ 1.90GHz (2494)
+
+Prefab name:  Barrel
+
+Coefficient of drag:  1
+Coefficient of lift:  1
+
+Amplitude:  1
+Ordinary frequency  10
+Angular frequency  1
+
+
+SampleCount 	 Avg. FPS 	 Avg. Memory usage (bytes)

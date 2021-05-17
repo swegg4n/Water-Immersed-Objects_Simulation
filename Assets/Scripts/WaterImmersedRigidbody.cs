@@ -26,7 +26,7 @@ public class WaterImmersedRigidbody : MonoBehaviour
 
     private void Awake()
     {
-        if (!GameObject.Find("GameManager").GetComponent<Benchmarking>())
+        if (!GameObject.Find("GameManager").GetComponent<Benchmarking>().enabled)
         {
             Initialize();
         }

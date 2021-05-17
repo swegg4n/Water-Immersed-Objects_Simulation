@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7851794424154747327}
   - component: {fileID: 7851794424154747326}
   - component: {fileID: 7851794424154747325}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Barrel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -126,7 +126,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c19706245df78b41bb925d9cdbf8768, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sampleCount: 1000
+  sampleCount: 100
   density: 500
   dragCoefficient: 1
   liftCoefficient: 1
