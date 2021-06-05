@@ -59,7 +59,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7650029744765058086
 Transform:
   m_ObjectHideFlags: 0
@@ -107,11 +107,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c19706245df78b41bb925d9cdbf8768, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sampleCount: 3000
+  sampleCount: 1000
   density: 600
-  dragCoefficient: 1.5
-  liftCoefficient: 0.1
-  straightness: 0.1
+  dragCoefficient: 1
+  liftCoefficient: 1
+  straightness: 0
   meshes: []
   transforms: []
 --- !u!64 &7650029744906991913

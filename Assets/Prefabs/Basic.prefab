@@ -113,7 +113,6 @@ GameObject:
   - component: {fileID: 8984073424922688735}
   - component: {fileID: 8984073424922688734}
   - component: {fileID: 919132148365596920}
-  - component: {fileID: 1336347610}
   m_Layer: 6
   m_Name: Basic
   m_TagString: Untagged
@@ -213,7 +212,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c19706245df78b41bb925d9cdbf8768, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sampleCount: 2000
+  sampleCount: 500
   density: 600
   dragCoefficient: 1
   liftCoefficient: 1
@@ -234,17 +233,3 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -4457607245505209530, guid: cab852b50c8aeb341bc378a7d515e5b2, type: 3}
---- !u!114 &1336347610
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8101059835589951873}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b2adeacf3f6b1b49bcfa4b08eda4f0f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  force: 1
-  impulse: 0

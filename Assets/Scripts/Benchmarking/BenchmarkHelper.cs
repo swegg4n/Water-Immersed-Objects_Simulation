@@ -6,7 +6,7 @@ public static class BenchmarkHelper
     /// <summary>
     /// Calculate the average value of an array
     /// </summary>
-    public static T AverageValue<T>(T[] t)
+    public static T AverageValue<T>(params T[] t)
     {
         dynamic avg = 0;
 
@@ -72,6 +72,7 @@ public static class BenchmarkHelper
 
         return originalVertices;
     }
+
 
     /// <summary>
     /// Get the square error between two collections of vertex positions

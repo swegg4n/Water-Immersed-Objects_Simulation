@@ -7,16 +7,18 @@ public class MeshSampler
 {
     public MeshApproximation MeshApproximation { get; private set; }
 
-    List<int> OnHullIndices = new List<int>();
-
     List<BoundingBox[]> debugBounds = new List<BoundingBox[]>(); //For Debugging
 
 
-    public MeshSampler(BoundingBox[] boudingBoxes, Transform[] linkedTransforms, int[] sampleCount_distribution, float straightness)
+    public MeshSampler(BoundingBox[] boudingBoxes, Transform[] linkedTransforms, int[] sampleCount_distribution, float straightness, Mesh[] meshes)
     {
         this.MeshApproximation = new MeshApproximation(sampleCount_distribution);
 
         SampleMesh(boudingBoxes, sampleCount_distribution, linkedTransforms, straightness);
+
+        MeshApproximation.UpdateSamplesPosition();
+
+        CalculateOnSurfaceParticles(meshes, linkedTransforms);
     }
 
 
@@ -39,42 +41,60 @@ public class MeshSampler
 
             debugBounds.Add(bounds_stratified);
 
+            int sampledPoints = 0;
+            int loops = -1;
 
-            for (int j = 0; j < sampleCount_distribution[i]; j++, c++)
+            while (sampledPoints < sampleCount_distribution[i])
             {
-                Vector3 sample_pos = bounds_stratified[j % bounds_stratified.Length].RandomPoint(straightness);
-                Vector3 sample_normal = Vector3.zero;
-                SampleCorrection(ref sample_pos, ref sample_normal, collider, c);
+                loops++;
 
-                SamplePoint sample = new SamplePoint(sample_pos - linkedTransforms[i].position, linkedTransforms[i].rotation, linkedTransforms[i], sample_normal);
-                MeshApproximation.Samples[c] = sample;
+                Vector3 sample_pos = bounds_stratified[loops % bounds_stratified.Length].RandomPoint(straightness);
+
+                Vector3 correctedPos = collider.ClosestPoint(sample_pos);
+                if (Vector3.SqrMagnitude(sample_pos - correctedPos) > 0.001f)   //if the sample is not within the mesh -> try again
+                    continue;
+
+                sampledPoints++;
+
+                SamplePoint sample = new SamplePoint(sample_pos - linkedTransforms[i].position, linkedTransforms[i].rotation, linkedTransforms[i]);
+                MeshApproximation.Samples[c++] = sample;
             }
         }
-        MeshApproximation.OnHullIndices = OnHullIndices.ToArray();
     }
 
 
-    /// <summary>
-    /// Corrects the sample to be placed on the surface of the mesh, if the sample exists outside of the mesh
-    /// </summary>
-    private void SampleCorrection(ref Vector3 sample_pos, ref Vector3 sample_normal, Collider collider, int sampleIndex)
+    private void CalculateOnSurfaceParticles(Mesh[] meshes, Transform[] linkedTransforms)
     {
-        if (collider)
-        {
-            Vector3 correctedPos = collider.ClosestPoint(sample_pos);
-            if (Vector3.SqrMagnitude(sample_pos - correctedPos) > 0.001f)
-            {
-                OnHullIndices.Add(sampleIndex);   //If this particle is on the hull => add a reference to the index
+        Vector3[] vertices = BenchmarkHelper.MeshArrayToVerticesArray(meshes, linkedTransforms);
 
-                RaycastHit hit;
-                if (Physics.Raycast(sample_pos, (correctedPos - sample_pos).normalized, out hit))
-                {
-                    sample_normal = hit.normal.normalized;
-                }
-            }
-            sample_pos = correctedPos;
+        (float, int)[] distanceToClosestVertex = new (float, int)[MeshApproximation.SampleCount];
+
+        Vector3 centerOfMass = MeshApproximation.AverageSamplePosition();
+        for (int i = 0; i < MeshApproximation.SampleCount; i++)
+        {
+            vertices = vertices.OrderBy(x => Vector3.Distance(x, MeshApproximation.Samples[i].GlobalPosition)).ToArray();
+
+            Vector3 rayDir = centerOfMass - MeshApproximation.Samples[i].GlobalPosition;
+            Vector3 rayOrigin = MeshApproximation.Samples[i].GlobalPosition - rayDir;
+            RaycastHit hit;
+            if (Physics.Raycast(rayOrigin, rayDir, out hit))
+                MeshApproximation.Samples[i].Normal = hit.normal;
+
+            distanceToClosestVertex[i] = (Vector3.Distance(vertices[0], MeshApproximation.Samples[i].GlobalPosition), i);
+        }
+
+        MeshApproximation.OnSurfaceIndices = new int[distanceToClosestVertex.Length / 2];
+
+        (float, int)[] ordered = (from s in distanceToClosestVertex
+                                  orderby s.Item1
+                                  select s).ToArray();
+
+        for (int i = 0; i < MeshApproximation.OnSurfaceIndices.Length; i++)
+        {
+            MeshApproximation.OnSurfaceIndices[i] = ordered[i].Item2;
         }
     }
+
 
     /// <summary>
     /// Divides a bounding box into several sub-bounding boxes based on the number of divisions
@@ -141,13 +161,12 @@ public class MeshSampler
         /*Debug if the particle is on the hull or not*/
         if (DebugManager.Instance && DebugManager.Instance.DebugOnHull)
         {
-            for (int i = 0, onHullCounter = 0; i < MeshApproximation.SampleCount; i++)
+            for (int i = 0; i < MeshApproximation.SampleCount; i++)
             {
                 Gizmos.color = Color.gray;
 
-                if (MeshApproximation.OnHullIndices[onHullCounter] == i)    //Works because OnHullIndices is sorted by definition
+                if (MeshApproximation.OnSurfaceIndices.Contains(i))
                 {
-                    ++onHullCounter;
                     Gizmos.color = Color.green;
                 }
 
@@ -156,14 +175,14 @@ public class MeshSampler
         }
 
 
-        /*Debug normals*/
-        if (DebugManager.Instance && DebugManager.Instance.DebugNormals)
+        /*Debug sample normals*/
+        if (DebugManager.Instance && DebugManager.Instance.DebugSampleNormals)
         {
             Gizmos.color = Color.cyan;
-            for (int i = 0; i < MeshApproximation.SampleCount; i++)
+            for (int i = 0; i < MeshApproximation.OnSurfaceIndices.Length; i++)
             {
-                Vector3 samplePos = MeshApproximation.Samples[i].GlobalPosition;
-                Gizmos.DrawLine(samplePos, samplePos + MeshApproximation.Samples[i].Normal * Gizmos.probeSize * 10);
+                Vector3 samplePos = MeshApproximation.Samples[MeshApproximation.OnSurfaceIndices[i]].GlobalPosition;
+                Gizmos.DrawLine(samplePos, samplePos + MeshApproximation.Samples[MeshApproximation.OnSurfaceIndices[i]].Normal * Gizmos.probeSize * 10);
             }
         }
 

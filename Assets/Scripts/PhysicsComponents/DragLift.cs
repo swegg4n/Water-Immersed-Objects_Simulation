@@ -26,19 +26,19 @@ public class DragLift
         this.liftCoefficient = liftCoefficient;
         this.totalSurfaceArea = totalSurfaceArea;
 
-        ms.MeshApproximation.UpdateSamplesPosition();
+        //ms.MeshApproximation.UpdateSamplesPosition();
 
-        debugDragForces = new Vector3[ms.MeshApproximation.OnHullIndices.Length];
-        debugLiftForces = new Vector3[ms.MeshApproximation.OnHullIndices.Length];
+        debugDragForces = new Vector3[ms.MeshApproximation.OnSurfaceIndices.Length];
+        debugLiftForces = new Vector3[ms.MeshApproximation.OnSurfaceIndices.Length];
     }
 
 
 
     public void Update()
     {
-        for (int i = 0; i < ms.MeshApproximation.OnHullIndices.Length; i++)
+        for (int i = 0; i < ms.MeshApproximation.OnSurfaceIndices.Length; i++)
         {
-            SamplePoint sp = ms.MeshApproximation.Samples[ms.MeshApproximation.OnHullIndices[i]];
+            SamplePoint sp = ms.MeshApproximation.Samples[ms.MeshApproximation.OnSurfaceIndices[i]];
 
             if (sp.LastPosition != null)
             {
@@ -52,14 +52,14 @@ public class DragLift
                 //    Debug.Log($"Velocity:  {deltaVelocity.z}");
                 //}
 
-                float density = (ms.MeshApproximation.IsUnderWater[ms.MeshApproximation.OnHullIndices[i]] == 1) ? WaterImmersedRigidbody.FluidDensity : 1.225f;      // Water drag  vs  air drag 
+                float density = (ms.MeshApproximation.IsUnderWater[ms.MeshApproximation.OnSurfaceIndices[i]] == 1) ? WaterImmersedRigidbody.FluidDensity : 1.225f;      // Water drag  vs  air drag 
 
                 Vector3 dragDirection = -deltaDistance.normalized;
                 Vector3 T = (Vector3.Cross(deltaVelocity, -sp.Normal));
                 Vector3 liftDirection = Vector3.Cross(T, deltaVelocity).normalized;
 
 
-                float areaFraction = totalSurfaceArea / ms.MeshApproximation.OnHullIndices.Length;
+                float areaFraction = totalSurfaceArea / ms.MeshApproximation.OnSurfaceIndices.Length;
 
                 float dragSurfaceArea = areaFraction * Mathf.Max(Vector3.Dot(deltaDistance.normalized, sp.Normal), 0);
                 float liftSurfaceArea = Mathf.Sqrt(Mathf.Pow(areaFraction, 2.0f) - Mathf.Pow(dragSurfaceArea, 2.0f)) * Mathf.Max(Vector3.Dot(deltaDistance.normalized, sp.Normal), 0.0f);
@@ -101,7 +101,7 @@ public class DragLift
             Gizmos.color = Color.blue;
             for (int i = 0; i < debugDragForces.Length; i++)
             {
-                Vector3 samplePos = ms.MeshApproximation.Samples[ms.MeshApproximation.OnHullIndices[i]].GlobalPosition;
+                Vector3 samplePos = ms.MeshApproximation.Samples[ms.MeshApproximation.OnSurfaceIndices[i]].GlobalPosition;
                 Gizmos.DrawLine(samplePos, samplePos + debugDragForces[i]);
             }
         }
@@ -112,7 +112,7 @@ public class DragLift
             Gizmos.color = Color.green;
             for (int i = 0; i < debugLiftForces.Length; i++)
             {
-                Vector3 samplePos = ms.MeshApproximation.Samples[ms.MeshApproximation.OnHullIndices[i]].GlobalPosition;
+                Vector3 samplePos = ms.MeshApproximation.Samples[ms.MeshApproximation.OnSurfaceIndices[i]].GlobalPosition;
                 Gizmos.DrawLine(samplePos, samplePos + debugLiftForces[i]);
             }
         }

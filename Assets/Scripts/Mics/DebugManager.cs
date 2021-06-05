@@ -17,7 +17,7 @@ public class DebugManager : MonoBehaviour
     [SerializeField] private bool debugLift = false;
     [SerializeField] private bool debugOnHull = false;
 
-    [SerializeField] private bool debugNormals = false;
+    [SerializeField] private bool debugSampleNormals = false;
     [SerializeField] private bool debugBounds = false;
 
 
@@ -27,6 +27,6 @@ public class DebugManager : MonoBehaviour
     public bool DebugLift { get { return debugLift; } }
     public bool DebugOnHull { get { return debugOnHull; } }
 
-    public bool DebugNormals { get { return debugNormals; } }
+    public bool DebugSampleNormals { get { return debugSampleNormals; } }
     public bool DebugBounds { get { return debugBounds; } }
 }

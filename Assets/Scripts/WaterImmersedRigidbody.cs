@@ -12,7 +12,7 @@ public class WaterImmersedRigidbody : MonoBehaviour
     [SerializeField] private float density = 700.0f;
     [SerializeField] private float dragCoefficient = 1.0f;
     [SerializeField] private float liftCoefficient = 1.0f;
-    [SerializeField] private float straightness = 0.0f;
+    [Range(0f, 1.0f)] [SerializeField] private float straightness = 0f;
 
     MeshSampler meshSampler;
     Gravity gravity;
@@ -56,12 +56,21 @@ public class WaterImmersedRigidbody : MonoBehaviour
             meshList.Add(GetComponent<MeshFilter>().sharedMesh);
             transformList.Add(transform);
         }
-        for (int i = 0; i < transform.childCount; i++)
-        {
-            if (transform.GetChild(i).GetComponent<Collider>() != null)
-            {
-                Transform child = transform.GetChild(i);
+        //for (int i = 0; i < transform.childCount; i++)
+        //{
+        //    if (transform.GetChild(i).GetComponent<Collider>() != null)
+        //    {
+        //        Transform child = transform.GetChild(i);
 
+        //        meshList.Add(child.GetComponent<MeshFilter>().sharedMesh);
+        //        transformList.Add(child);
+        //    }
+        //}
+
+        foreach (Transform child in GetComponentsInChildren<Transform>())
+        {
+            if (child.GetComponent<Collider>() != null)
+            {
                 meshList.Add(child.GetComponent<MeshFilter>().sharedMesh);
                 transformList.Add(child);
             }
@@ -82,11 +91,11 @@ public class WaterImmersedRigidbody : MonoBehaviour
                 new Vector3(meshes[i].bounds.size.x * transform.localScale.x * transforms[i].localScale.x,
                             meshes[i].bounds.size.y * transform.localScale.y * transforms[i].localScale.y,
                             meshes[i].bounds.size.z * transform.localScale.z * transforms[i].localScale.z)
-                * 1.5f, transforms[i]);
+                , transforms[i]);
         }
 
-        float totalMeshVolume = meshVolumes.Sum();  //MeshVolume.VolumeOfMesh(meshes, transforms);
-        float totalSurfaceArea = surfaceAreas.Sum();    //MeshSurfaceArea.SurfaceAreaOfMesh(meshes, transforms);
+        float totalMeshVolume = meshVolumes.Sum();
+        float totalSurfaceArea = surfaceAreas.Sum();
 
         Rigidbody rb = GetComponent<Rigidbody>();
         rb.isKinematic = true;
@@ -95,7 +104,7 @@ public class WaterImmersedRigidbody : MonoBehaviour
         rb.drag = 0.0f;
         rb.angularDrag = 0.0f;
 
-        meshSampler = new MeshSampler(boudingBoxes, transforms, DistributeSamples(meshVolumes, totalMeshVolume, surfaceAreas, totalSurfaceArea), straightness);
+        meshSampler = new MeshSampler(boudingBoxes, transforms, DistributeSamples(meshVolumes, totalMeshVolume, surfaceAreas, totalSurfaceArea), straightness, meshes);
         gravity = new Gravity(rb, meshSampler);
         buoyancy = new Buoyancy(rb, meshSampler, totalMeshVolume);
         waterDrag = new DragLift(rb, meshSampler, dragCoefficient, liftCoefficient, meshes, transforms, transform, totalSurfaceArea);
@@ -167,5 +176,4 @@ public class WaterImmersedRigidbody : MonoBehaviour
         catch (Exception) { }
 
     }
-
 }

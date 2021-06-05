@@ -5,7 +5,7 @@ public class MeshApproximation
 {
     public SamplePoint[] Samples { get; private set; }
     public byte[] IsUnderWater { get; private set; }
-    public int[] OnHullIndices { get; set; }
+    public int[] OnSurfaceIndices { get; set; }
 
     public int SampleCount { get; private set; }
 
