@@ -26,8 +26,6 @@ public class DragLift
         this.liftCoefficient = liftCoefficient;
         this.totalSurfaceArea = totalSurfaceArea;
 
-        //ms.MeshApproximation.UpdateSamplesPosition();
-
         debugDragForces = new Vector3[ms.MeshApproximation.OnSurfaceIndices.Length];
         debugLiftForces = new Vector3[ms.MeshApproximation.OnSurfaceIndices.Length];
     }
@@ -46,11 +44,6 @@ public class DragLift
                 Vector3 deltaVelocity = deltaDistance / Time.deltaTime;
 
                 float velocitySquared = Vector3.SqrMagnitude(deltaVelocity);
-
-                //if (i == 0)
-                //{
-                //    Debug.Log($"Velocity:  {deltaVelocity.z}");
-                //}
 
                 float density = (ms.MeshApproximation.IsUnderWater[ms.MeshApproximation.OnSurfaceIndices[i]] == 1) ? WaterImmersedRigidbody.FluidDensity : 1.225f;      // Water drag  vs  air drag 
 

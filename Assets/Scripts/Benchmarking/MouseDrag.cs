@@ -22,7 +22,7 @@ public class MouseDrag : MonoBehaviour
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity,mask))
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, mask))
             {
                 if (hit.transform.GetComponentInParent<WaterImmersedRigidbody>())
                 {

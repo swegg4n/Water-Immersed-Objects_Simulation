@@ -26,17 +26,7 @@ public class WaterImmersedRigidbody : MonoBehaviour
 
     private void Awake()
     {
-        try
-        {
-            if (!GameObject.Find("GameManager").GetComponent<Benchmarking>().enabled)
-            {
-                Initialize();
-            }
-        }
-        catch (Exception)
-        {
-            Initialize();
-        }
+        Initialize();
     }
 
 
@@ -46,26 +36,12 @@ public class WaterImmersedRigidbody : MonoBehaviour
     public void Initialize()
     {
         Quaternion rotation = transform.rotation;
+        //Vector3 scale = transform.localScale;
         transform.rotation = Quaternion.Euler(0, 0, 0);
+        //transform.localScale = Vector3.one;
 
         List<Mesh> meshList = new List<Mesh>();
         List<Transform> transformList = new List<Transform>();
-
-        if (GetComponent<Collider>() != null)
-        {
-            meshList.Add(GetComponent<MeshFilter>().sharedMesh);
-            transformList.Add(transform);
-        }
-        //for (int i = 0; i < transform.childCount; i++)
-        //{
-        //    if (transform.GetChild(i).GetComponent<Collider>() != null)
-        //    {
-        //        Transform child = transform.GetChild(i);
-
-        //        meshList.Add(child.GetComponent<MeshFilter>().sharedMesh);
-        //        transformList.Add(child);
-        //    }
-        //}
 
         foreach (Transform child in GetComponentsInChildren<Transform>())
         {
@@ -111,22 +87,11 @@ public class WaterImmersedRigidbody : MonoBehaviour
 
 
         transform.rotation = rotation;
+        //transform.localScale = scale;
+
         rb.isKinematic = false;
     }
 
-
-    /// <summary>
-    /// Sets the properties of this object and initializes it. (Used in benchmarking)
-    /// </summary>
-    public void Set(int sampleCount, float density, float dragCoefficient, float liftCoefficient)
-    {
-        this.sampleCount = sampleCount;
-        this.density = density;
-        this.dragCoefficient = dragCoefficient;
-        this.liftCoefficient = liftCoefficient;
-
-        Initialize();
-    }
 
     /// <summary>
     /// Distributes the particles among the meshes, based on the meshes' bounds volume

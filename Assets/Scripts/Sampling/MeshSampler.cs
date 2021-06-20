@@ -44,7 +44,7 @@ public class MeshSampler
             int sampledPoints = 0;
             int loops = -1;
 
-            while (sampledPoints < sampleCount_distribution[i])
+            while (sampledPoints < sampleCount_distribution[i] && loops < 10000)
             {
                 loops++;
 
@@ -56,7 +56,7 @@ public class MeshSampler
 
                 sampledPoints++;
 
-                SamplePoint sample = new SamplePoint(sample_pos - linkedTransforms[i].position, linkedTransforms[i].rotation, linkedTransforms[i]);
+                SamplePoint sample = new SamplePoint(sample_pos - linkedTransforms[i].position, linkedTransforms[i].rotation, linkedTransforms[i].localScale, linkedTransforms[i]);
                 MeshApproximation.Samples[c++] = sample;
             }
         }

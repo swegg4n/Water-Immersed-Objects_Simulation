@@ -2,16 +2,19 @@ using UnityEngine;
 
 public class SamplePoint
 {
-    public SamplePoint(Vector3 localPosition, Quaternion localRotation, Transform linkedTransform)
+    public SamplePoint(Vector3 localPosition, Quaternion localRotation, Vector3 localScale, Transform linkedTransform)
     {
         this.localPosition = localPosition;
         this.localRotation = localRotation;
+        this.localScale = localScale;
+
         this.linkedTransform = linkedTransform;
         this.Normal = Vector3.zero;
     }
 
     private Vector3 localPosition;
     private Quaternion localRotation;
+    private Vector3 localScale;
 
     public Vector3 GlobalPosition { get; private set; }
     public Vector3? LastPosition { get; set; }
